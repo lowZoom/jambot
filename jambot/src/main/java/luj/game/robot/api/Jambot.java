@@ -1,5 +1,8 @@
 package luj.game.robot.api;
 
-public class Jambot {
+public enum Jambot {
+  ;
+
+
 
 }
