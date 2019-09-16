@@ -13,4 +13,12 @@
   <groupId>luj.game.robot</groupId>
   <artifactId>jambot</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>luj.ava</groupId>
+      <artifactId>lujava</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>
