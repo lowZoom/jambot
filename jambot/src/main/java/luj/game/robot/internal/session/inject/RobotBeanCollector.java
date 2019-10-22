@@ -1,4 +1,4 @@
-package luj.game.robot.internal.inject;
+package luj.game.robot.internal.session.inject;
 
 import java.util.List;
 import luj.game.robot.api.boot.RobotStartListener;

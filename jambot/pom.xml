@@ -16,8 +16,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>luj.ava</groupId>
-      <artifactId>lujava</artifactId>
+      <groupId>luj.cluster</groupId>
+      <artifactId>lujcluster</artifactId>
       <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
