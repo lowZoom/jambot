@@ -10,8 +10,10 @@ final class OnLujclusterStart implements NodeStartListener {
 
   @Override
   public void onStart(Context ctx) {
-    RobotBeanCollector.Result rootBean = ctx.getStartParam();
+    BotbeanInLujcluster botbean = ctx.getStartParam();
+    RobotBeanCollector.Result rootBean = botbean.getInjectRoot();
 
-    new BotStartListenTrigger(rootBean.getStartListeners(), rootBean.getProtoEncoder()).trigger();
+    new BotStartListenTrigger(rootBean.getStartListeners(),
+        botbean.getLujnet(), rootBean.getProtoEncoder()).trigger();
   }
 }

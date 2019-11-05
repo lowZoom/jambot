@@ -2,24 +2,28 @@ package luj.game.robot.internal.start.botinstance;
 
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoEncoder;
-import luj.net.api.LujNet;
 import luj.net.api.NetConnection;
+import luj.net.api.NetContext;
 
 public class BotInstanceCreator {
 
-  public BotInstanceCreator(String host, int port, RobotProtoEncoder protoEncoder) {
+  public BotInstanceCreator(String host, int port, NetContext lujnet,
+      RobotProtoEncoder protoEncoder) {
     _host = host;
     _port = port;
+
+    _lujnet = lujnet;
     _protoEncoder = protoEncoder;
   }
 
   public RobotStartListener.Robot create() {
-    NetConnection conn = LujNet.createConnection(_host, _port);
+    NetConnection conn = _lujnet.createConnection(_host, _port);
     return new RobotImpl(conn, _protoEncoder);
   }
 
   private final String _host;
   private final int _port;
 
+  private final NetContext _lujnet;
   private final RobotProtoEncoder _protoEncoder;
 }
