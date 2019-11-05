@@ -7,6 +7,7 @@ import luj.game.robot.internal.session.inject.RobotBeanCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class RobotSessionStarter {
 
@@ -18,14 +19,21 @@ public class RobotSessionStarter {
 
   public void start() {
     RobotBeanCollector.Result root = new RobotBeanCollector(_appContext).collect();
-    List<RobotStartListener> listenerList = root.getStartListeners();
 
+    List<RobotStartListener> listenerList = root.getStartListeners();
     if (listenerList.isEmpty()) {
       LOG.warn("没有启动逻辑，机器人结束：{}", RobotStartListener.class.getName());
       return;
     }
 
-    LujCluster.start(_appContext).startNode(_host, _port, _host + ":" + _port, null);
+    try (AnnotationConfigApplicationContext botCtx =
+        new AnnotationConfigApplicationContext(InjectConf.class)) {
+      startLujcluster(botCtx, root);
+    }
+  }
+
+  private void startLujcluster(ApplicationContext botCtx, RobotBeanCollector.Result rootBean) {
+    LujCluster.start(botCtx).startNode(_host, _port, _host + ":" + _port, rootBean);
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(RobotSessionStarter.class);

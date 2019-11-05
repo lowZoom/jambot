@@ -4,7 +4,12 @@ public interface RobotStartListener {
 
   interface Context {
 
-    void connect(String host, int port);
+    Robot createRobot(String host, int port);
+  }
+
+  interface Robot {
+
+    void send(Object proto);
   }
 
   void onStart(Context ctx);

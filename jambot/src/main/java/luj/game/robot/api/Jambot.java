@@ -7,6 +7,6 @@ public enum Jambot {
   ;
 
   public static void start(ApplicationContext appContext) {
-    new RobotSessionStarter("192.168.188.227", 8190, appContext).start();
+    new RobotSessionStarter("127.0.0.1", 10608, appContext).start();
   }
 }
