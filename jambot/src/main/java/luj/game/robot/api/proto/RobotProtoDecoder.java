@@ -1,10 +1,12 @@
 package luj.game.robot.api.proto;
 
+import io.netty.buffer.ByteBuf;
+
 public interface RobotProtoDecoder {
 
   interface Context {
 
-    byte[] data();
+    ByteBuf data();
   }
 
   Object decode(Context ctx) throws Exception;

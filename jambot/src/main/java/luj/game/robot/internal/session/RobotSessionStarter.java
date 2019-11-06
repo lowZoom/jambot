@@ -1,8 +1,14 @@
 package luj.game.robot.internal.session;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import luj.ava.reflect.type.TypeX;
 import luj.cluster.api.LujCluster;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.internal.net.BotbeanInLujnet;
 import luj.game.robot.internal.session.inject.RobotBeanCollector;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
 import luj.net.api.LujNet;
@@ -36,10 +42,24 @@ public class RobotSessionStarter {
   }
 
   private void startLujcluster(ApplicationContext botCtx, RobotBeanCollector.Result injectRoot) {
-    NetContext lujnet = LujNet.create(botCtx);
+    NetContext lujnet = LujNet.create(botCtx, createNetParam(injectRoot));
     BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet);
 
     LujCluster.start(botCtx).startNode(_host, _port, _host + ":" + _port, botbean);
+  }
+
+  private BotbeanInLujnet createNetParam(RobotBeanCollector.Result injectRoot) {
+    Map<Class<?>, RobotProtoHandler<?>> handleMap = injectRoot.getProtoHandlerList().stream()
+        .collect(Collectors.toMap(this::getProtoType, Function.identity()));
+
+    return new BotbeanInLujnet(injectRoot.getProtoDecoder(), handleMap);
+  }
+
+  private Class<?> getProtoType(RobotProtoHandler<?> handler) {
+    return TypeX.ofInstance(handler)
+        .getSupertype(RobotProtoHandler.class)
+        .getTypeParam(0)
+        .asClass();
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(RobotSessionStarter.class);

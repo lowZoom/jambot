@@ -6,7 +6,9 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import luj.ava.spring.Internal;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoEncoder;
+import luj.game.robot.api.proto.RobotProtoHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Internal
@@ -22,6 +24,16 @@ final class InjectRoot implements RobotBeanCollector.Result {
     return _protoEncoder;
   }
 
+  @Override
+  public RobotProtoDecoder getProtoDecoder() {
+    return _protoDecoder;
+  }
+
+  @Override
+  public List<RobotProtoHandler<?>> getProtoHandlerList() {
+    return _protoHandlerList;
+  }
+
   private <T> List<T> nonNull(List<T> list) {
     return MoreObjects.firstNonNull(list, ImmutableList.of());
   }
@@ -31,4 +43,10 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Autowired
   private RobotProtoEncoder _protoEncoder;
+
+  @Autowired
+  private RobotProtoDecoder _protoDecoder;
+
+  @Autowired(required = false)
+  private List<RobotProtoHandler<?>> _protoHandlerList;
 }
