@@ -8,8 +8,6 @@ import luj.game.robot.internal.net.BotbeanInLujnet;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import luj.net.api.NetConnection;
 import luj.net.api.data.NetReceiveListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Internal
 final class OnLujnetReceive implements NetReceiveListener {
@@ -26,11 +24,9 @@ final class OnLujnetReceive implements NetReceiveListener {
     RobotProtoHandler<?> handler = handlerMap.get(proto.getClass());
 
     if (handler == null) {
-      LOG.debug("未处理的协议包：{}", proto.getClass().getName());
+//      LOG.debug("未处理的协议包：{}", proto.getClass().getName());
       return;
     }
-
-    System.out.println(handler.getClass());
 
     NetConnection conn = ctx.getConnection();
     RobotState robotState = conn.getApplicationParam();
@@ -39,5 +35,5 @@ final class OnLujnetReceive implements NetReceiveListener {
         conn.getContext(), param.getProtoEncoder()));
   }
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnLujnetReceive.class);
+//  private static final Logger LOG = LoggerFactory.getLogger(OnLujnetReceive.class);
 }

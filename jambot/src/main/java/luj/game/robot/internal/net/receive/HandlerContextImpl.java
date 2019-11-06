@@ -33,6 +33,17 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
     new BotProtoSender(proto, _protoEncoder, _robotState.getConnection()).send();
   }
 
+  @Override
+  public void putData(Object data) {
+    _robotState.getDataMap().put(data.getClass(), data);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <D> D getData(Class<D> dataType) {
+    return (D) _robotState.getDataMap().get(dataType);
+  }
+
   private final Object _proto;
   private final RobotState _robotState;
 

@@ -1,5 +1,6 @@
 package luj.game.robot.internal.start.botinstance;
 
+import java.util.HashMap;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.net.api.NetConnection;
@@ -18,11 +19,12 @@ public class BotInstanceCreator {
 
   public RobotStartListener.Robot create() {
     RobotState robotState = new RobotState();
+    robotState.setDataMap(new HashMap<>());
 
     NetConnection conn = _lujnet.createConnection(_host, _port, robotState);
     robotState.setConnection(conn);
 
-    return new RobotImpl(conn, _protoEncoder);
+    return new RobotImpl(robotState, _protoEncoder);
   }
 
   private final String _host;

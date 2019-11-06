@@ -9,6 +9,10 @@ public interface RobotProtoHandler<P> {
     void connect(String host, int port);
 
     void send(Object proto);
+
+    void putData(Object data);
+
+    <D> D getData(Class<D> dataType);
   }
 
   void onHandle(Context ctx);

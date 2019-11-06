@@ -10,6 +10,8 @@ public interface RobotStartListener {
   interface Robot {
 
     void send(Object proto);
+
+    void putData(Object data);
   }
 
   void onStart(Context ctx);
