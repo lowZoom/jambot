@@ -5,7 +5,11 @@ import luj.ava.spring.Internal;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.net.BotbeanInLujnet;
+import luj.game.robot.internal.start.botinstance.RobotState;
+import luj.net.api.NetConnection;
 import luj.net.api.data.NetReceiveListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Internal
 final class OnLujnetReceive implements NetReceiveListener {
@@ -20,9 +24,20 @@ final class OnLujnetReceive implements NetReceiveListener {
 
     Map<Class<?>, RobotProtoHandler<?>> handlerMap = param.getHandlerMap();
     RobotProtoHandler<?> handler = handlerMap.get(proto.getClass());
+
+    if (handler == null) {
+      LOG.debug("未处理的协议包：{}", proto.getClass().getName());
+      return;
+    }
+
     System.out.println(handler.getClass());
 
-    HandlerContextImpl handleCtx = new HandlerContextImpl(proto);
-    handler.onHandle(handleCtx);
+    NetConnection conn = ctx.getConnection();
+    RobotState robotState = conn.getApplicationParam();
+
+    handler.onHandle(new HandlerContextImpl(proto, robotState,
+        conn.getContext(), param.getProtoEncoder()));
   }
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnLujnetReceive.class);
 }

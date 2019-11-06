@@ -17,7 +17,11 @@ public class BotInstanceCreator {
   }
 
   public RobotStartListener.Robot create() {
-    NetConnection conn = _lujnet.createConnection(_host, _port);
+    RobotState robotState = new RobotState();
+
+    NetConnection conn = _lujnet.createConnection(_host, _port, robotState);
+    robotState.setConnection(conn);
+
     return new RobotImpl(conn, _protoEncoder);
   }
 
