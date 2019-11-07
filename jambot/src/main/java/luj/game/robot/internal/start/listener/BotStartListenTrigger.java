@@ -1,32 +1,26 @@
 package luj.game.robot.internal.start.listener;
 
 import java.util.List;
+import luj.cluster.api.node.NodeStartListener;
 import luj.game.robot.api.boot.RobotStartListener;
-import luj.game.robot.api.proto.RobotProtoEncoder;
-import luj.net.api.NetContext;
 
 public class BotStartListenTrigger {
 
-  public BotStartListenTrigger(List<RobotStartListener> listenerList,
-      NetContext lujnet, RobotProtoEncoder protoEncoder) {
+  public BotStartListenTrigger(NodeStartListener.Actor parentRef,
+      List<RobotStartListener> listenerList) {
+    _parentRef = parentRef;
     _listenerList = listenerList;
-    _lujnet = lujnet;
-    _protoEncoder = protoEncoder;
   }
 
   public void trigger() {
-    if (_listenerList == null) {
-      return;
-    }
+    StartContextImpl ctx = new StartContextImpl(_parentRef);
 
-    StartContextImpl ctx = new StartContextImpl(_lujnet, _protoEncoder);
     for (RobotStartListener listener : _listenerList) {
       listener.onStart(ctx);
     }
   }
 
-  private final List<RobotStartListener> _listenerList;
+  private final NodeStartListener.Actor _parentRef;
 
-  private final NetContext _lujnet;
-  private final RobotProtoEncoder _protoEncoder;
+  private final List<RobotStartListener> _listenerList;
 }

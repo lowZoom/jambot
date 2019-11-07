@@ -1,9 +1,18 @@
 package luj.game.robot.internal.start.botinstance;
 
+import akka.actor.ActorRef;
 import java.util.Map;
 import luj.net.api.NetConnection;
 
 public class RobotState {
+
+  public ActorRef getInstanceRef() {
+    return _instanceRef;
+  }
+
+  public void setInstanceRef(ActorRef instanceRef) {
+    _instanceRef = instanceRef;
+  }
 
   public NetConnection getConnection() {
     return _connection;
@@ -21,6 +30,7 @@ public class RobotState {
     _dataMap = dataMap;
   }
 
+  private ActorRef _instanceRef;
   private NetConnection _connection;
 
   private Map<Class<?>, Object> _dataMap;

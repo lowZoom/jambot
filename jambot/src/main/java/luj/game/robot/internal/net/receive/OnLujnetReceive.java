@@ -32,7 +32,7 @@ final class OnLujnetReceive implements NetReceiveListener {
     RobotState robotState = conn.getApplicationParam();
 
     handler.onHandle(new HandlerContextImpl(proto, robotState,
-        conn.getContext(), param.getProtoEncoder()));
+        conn.getContext(), param.getProtoEncoder(), robotState.getInstanceRef()));
   }
 
 //  private static final Logger LOG = LoggerFactory.getLogger(OnLujnetReceive.class);

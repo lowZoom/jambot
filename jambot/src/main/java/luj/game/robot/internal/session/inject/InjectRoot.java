@@ -5,10 +5,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import luj.ava.spring.Internal;
+import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Internal
@@ -31,7 +33,17 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Override
   public List<RobotProtoHandler<?>> getProtoHandlerList() {
-    return _protoHandlerList;
+    return nonNull(_protoHandlerList);
+  }
+
+  @Override
+  public RobotInstanceInjectRoot getInstanceInjectRoot() {
+    return _instanceInjectRoot;
+  }
+
+  @Override
+  public List<RobotCommand> getCommandList() {
+    return nonNull(_commandList);
   }
 
   private <T> List<T> nonNull(List<T> list) {
@@ -49,4 +61,10 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Autowired(required = false)
   private List<RobotProtoHandler<?>> _protoHandlerList;
+
+  @Autowired
+  private RobotInstanceInjectRoot _instanceInjectRoot;
+
+  @Autowired(required = false)
+  private List<RobotCommand> _commandList;
 }

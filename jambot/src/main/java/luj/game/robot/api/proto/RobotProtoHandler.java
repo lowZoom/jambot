@@ -6,13 +6,21 @@ public interface RobotProtoHandler<P> {
 
     <P> P proto(RobotProtoHandler<P> handler);
 
+    ///////////////////////
+
     void connect(String host, int port);
 
     void send(Object proto);
 
+    ///////////////////////
+
     void putData(Object data);
 
     <D> D getData(Class<D> dataType);
+
+    ///////////////////////
+
+    void executeCommand(Class<?> cmdType);
   }
 
   void onHandle(Context ctx);
