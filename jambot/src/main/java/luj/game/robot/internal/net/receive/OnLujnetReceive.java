@@ -1,11 +1,9 @@
 package luj.game.robot.internal.net.receive;
 
-import java.util.Map;
+import io.netty.buffer.ByteBuf;
 import luj.ava.spring.Internal;
-import luj.game.robot.api.proto.RobotProtoDecoder;
-import luj.game.robot.api.proto.RobotProtoHandler;
-import luj.game.robot.internal.net.BotbeanInLujnet;
-import luj.game.robot.internal.start.botinstance.RobotState;
+import luj.cluster.api.actor.ActorPreStartHandler;
+import luj.game.robot.internal.concurrent.instance.receive.BotReceiveProtoMsg;
 import luj.net.api.NetConnection;
 import luj.net.api.data.NetReceiveListener;
 
@@ -13,26 +11,16 @@ import luj.net.api.data.NetReceiveListener;
 final class OnLujnetReceive implements NetReceiveListener {
 
   @Override
-  public void onReceive(Context ctx) throws Exception {
-    BotbeanInLujnet param = ctx.getApplicationParam();
-    RobotProtoDecoder protoDecoder = param.getProtoDecoder();
-
-    DecodeContextImpl decodeCtx = new DecodeContextImpl(ctx.getData());
-    Object proto = protoDecoder.decode(decodeCtx);
-
-    Map<Class<?>, RobotProtoHandler<?>> handlerMap = param.getHandlerMap();
-    RobotProtoHandler<?> handler = handlerMap.get(proto.getClass());
-
-    if (handler == null) {
-//      LOG.debug("未处理的协议包：{}", proto.getClass().getName());
-      return;
-    }
+  public void onReceive(Context ctx) {
+    ByteBuf dataBuf = ctx.getData();
+    byte[] data = new byte[dataBuf.readableBytes()];
+    dataBuf.readBytes(data);
 
     NetConnection conn = ctx.getConnection();
-    RobotState robotState = conn.getApplicationParam();
+    ActorPreStartHandler.Actor instanceRef = conn.getApplicationParam();
 
-    handler.onHandle(new HandlerContextImpl(proto, robotState,
-        conn.getContext(), param.getProtoEncoder(), robotState.getInstanceRef()));
+    BotReceiveProtoMsg msg = new BotReceiveProtoMsg(data);
+    instanceRef.tell(msg);
   }
 
 //  private static final Logger LOG = LoggerFactory.getLogger(OnLujnetReceive.class);

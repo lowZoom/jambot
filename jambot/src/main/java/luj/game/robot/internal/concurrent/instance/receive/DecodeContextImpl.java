@@ -1,18 +1,17 @@
-package luj.game.robot.internal.net.receive;
+package luj.game.robot.internal.concurrent.instance.receive;
 
-import io.netty.buffer.ByteBuf;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 
 final class DecodeContextImpl implements RobotProtoDecoder.Context {
 
-  DecodeContextImpl(ByteBuf data) {
+  DecodeContextImpl(byte[] data) {
     _data = data;
   }
 
   @Override
-  public ByteBuf data() {
+  public byte[] data() {
     return _data;
   }
 
-  private final ByteBuf _data;
+  private final byte[] _data;
 }

@@ -1,4 +1,4 @@
-package luj.game.robot.internal.net.receive;
+package luj.game.robot.internal.concurrent.instance.receive;
 
 import akka.actor.ActorRef;
 import luj.game.robot.api.proto.RobotProtoEncoder;
@@ -6,6 +6,7 @@ import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
+import luj.net.api.NetConnection;
 import luj.net.api.NetContext;
 
 final class HandlerContextImpl implements RobotProtoHandler.Context {
@@ -27,8 +28,9 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
 
   @Override
   public void connect(String host, int port) {
-    _robotState.getConnection().close();
-    _robotState.setConnection(_lujnet.createConnection(host, port, _robotState));
+    NetConnection oldConn = _robotState.getConnection();
+    oldConn.close();
+    _robotState.setConnection(_lujnet.createConnection(host, port, oldConn.getApplicationParam()));
   }
 
   @Override

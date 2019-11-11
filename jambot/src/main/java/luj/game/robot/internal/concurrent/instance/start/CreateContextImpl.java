@@ -1,5 +1,6 @@
 package luj.game.robot.internal.concurrent.instance.start;
 
+import luj.cluster.api.actor.ActorPreStartHandler;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
@@ -10,9 +11,10 @@ import luj.net.api.NetContext;
 
 final class CreateContextImpl implements RobotCreateListener.Context {
 
-  CreateContextImpl(RobotInstanceActor instanceActor, RobotState robotState, NetContext lujnet,
-      RobotProtoEncoder protoEncoder) {
+  CreateContextImpl(RobotInstanceActor instanceActor, ActorPreStartHandler.Actor instanceRef,
+      RobotState robotState, NetContext lujnet, RobotProtoEncoder protoEncoder) {
     _instanceActor = instanceActor;
+    _instanceRef = instanceRef;
     _robotState = robotState;
     _lujnet = lujnet;
     _protoEncoder = protoEncoder;
@@ -30,7 +32,7 @@ final class CreateContextImpl implements RobotCreateListener.Context {
 
   @Override
   public void connect(String host, int port) {
-    NetConnection conn = _lujnet.createConnection(host, port, _robotState);
+    NetConnection conn = _lujnet.createConnection(host, port, _instanceRef);
     _robotState.setConnection(conn);
   }
 
@@ -40,6 +42,7 @@ final class CreateContextImpl implements RobotCreateListener.Context {
   }
 
   private final RobotInstanceActor _instanceActor;
+  private final ActorPreStartHandler.Actor _instanceRef;
   private final RobotState _robotState;
 
   private final NetContext _lujnet;

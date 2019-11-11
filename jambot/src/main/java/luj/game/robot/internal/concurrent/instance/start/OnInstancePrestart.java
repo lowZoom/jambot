@@ -15,13 +15,12 @@ final class OnInstancePrestart implements ActorPreStartHandler<RobotInstanceActo
   public void onHandle(Context ctx) {
     RobotInstanceActor instanceActor = ctx.getActorState(this);
     RobotState robotState = instanceActor.getRobotState();
-    robotState.setInstanceRef(ctx.getActorRef());
 
     RobotInstanceDependency dependency = instanceActor.getDependency();
     RobotInstanceInjectRoot rootBean = dependency.getInjectRoot();
 
     CreateContextImpl createCtx = new CreateContextImpl(instanceActor,
-        robotState, dependency.getLujnet(), rootBean.getProtoEncoder());
+        ctx.getActor(), robotState, dependency.getLujnet(), rootBean.getProtoEncoder());
 
     RobotCreateListener createListener = rootBean.getCreateListener();
     createListener.onCreate(createCtx);
