@@ -21,7 +21,7 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
     RobotInstanceInjectRoot injectRoot = instanceDep.getInjectRoot();
     RobotProtoDecoder protoDecoder = injectRoot.getProtoDecoder();
 
-    DecodeContextImpl decodeCtx = new DecodeContextImpl(msg.getProtoData());// ctx.getData());
+    DecodeContextImpl decodeCtx = new DecodeContextImpl(msg.getProtoData());
     Object proto = protoDecoder.decode(decodeCtx);
 
     Map<Class<?>, RobotProtoHandler<?>> handlerMap = instanceDep.getProtoHandleMap();
@@ -38,4 +38,6 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
     handler.onHandle(new HandlerContextImpl(proto, robotState,
         instanceDep.getLujnet(), injectRoot.getProtoEncoder(), ctx.getActorRef()));
   }
+
+//  private static final Logger LOG = LoggerFactory.getLogger(OnReceiveProto.class);
 }
