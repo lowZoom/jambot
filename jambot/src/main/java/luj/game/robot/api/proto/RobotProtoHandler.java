@@ -1,5 +1,7 @@
 package luj.game.robot.api.proto;
 
+import luj.game.robot.api.action.RobotCommand;
+
 public interface RobotProtoHandler<P> {
 
   interface Context {
@@ -20,7 +22,7 @@ public interface RobotProtoHandler<P> {
 
     ///////////////////////
 
-    void executeCommand(Class<?> cmdType);
+    void executeCommand(Class<? extends RobotCommand> cmdType);
   }
 
   void onHandle(Context ctx);

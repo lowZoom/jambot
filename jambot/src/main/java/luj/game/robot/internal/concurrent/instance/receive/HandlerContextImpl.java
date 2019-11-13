@@ -1,6 +1,8 @@
 package luj.game.robot.internal.concurrent.instance.receive;
 
-import akka.actor.ActorRef;
+import java.time.Duration;
+import luj.cluster.api.actor.ActorMessageHandler;
+import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
@@ -11,8 +13,8 @@ import luj.net.api.NetContext;
 
 final class HandlerContextImpl implements RobotProtoHandler.Context {
 
-  HandlerContextImpl(Object proto, RobotState robotState,
-      NetContext lujnet, RobotProtoEncoder protoEncoder, ActorRef instanceRef) {
+  HandlerContextImpl(Object proto, RobotState robotState, NetContext lujnet,
+      RobotProtoEncoder protoEncoder, ActorMessageHandler.Ref instanceRef) {
     _proto = proto;
     _robotState = robotState;
     _lujnet = lujnet;
@@ -50,9 +52,9 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
-  public void executeCommand(Class<?> cmdType) {
+  public void executeCommand(Class<? extends RobotCommand> cmdType) {
     BotExecuteCommandMsg msg = new BotExecuteCommandMsg(cmdType);
-    _instanceRef.tell(msg, ActorRef.noSender());
+    _instanceRef.tell(msg, Duration.ofMillis(1000));
   }
 
   private final Object _proto;
@@ -61,5 +63,5 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   private final NetContext _lujnet;
   private final RobotProtoEncoder _protoEncoder;
 
-  private final ActorRef _instanceRef;
+  private final ActorMessageHandler.Ref _instanceRef;
 }
