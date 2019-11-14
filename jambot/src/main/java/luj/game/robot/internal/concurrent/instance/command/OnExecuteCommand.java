@@ -19,6 +19,6 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     RobotCommand cmd = cmdMap.get(msg.getCommandType());
 
     cmd.onExecute(new CommandContextImpl(actor.getRobotState(),
-        dep.getInjectRoot().getProtoEncoder()));
+        dep.getInjectRoot().getProtoEncoder(), ctx.getActorRef()));
   }
 }

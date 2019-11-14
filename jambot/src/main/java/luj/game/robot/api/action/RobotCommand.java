@@ -7,6 +7,8 @@ public interface RobotCommand {
     void send(Object proto);
 
     <D> D getData(Class<D> dataType);
+
+    void executeCommand(Class<? extends RobotCommand> cmdType);
   }
 
   void onExecute(Context ctx);

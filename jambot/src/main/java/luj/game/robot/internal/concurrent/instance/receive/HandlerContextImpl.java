@@ -1,11 +1,10 @@
 package luj.game.robot.internal.concurrent.instance.receive;
 
-import java.time.Duration;
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
-import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
+import luj.game.robot.internal.concurrent.instance.command.CommandExecuteStarter;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import luj.net.api.NetConnection;
@@ -53,8 +52,7 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
 
   @Override
   public void executeCommand(Class<? extends RobotCommand> cmdType) {
-    BotExecuteCommandMsg msg = new BotExecuteCommandMsg(cmdType);
-    _instanceRef.tell(msg, Duration.ofMillis(1000));
+    new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
 
   private final Object _proto;
