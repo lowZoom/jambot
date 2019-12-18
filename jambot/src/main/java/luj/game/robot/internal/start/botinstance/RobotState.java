@@ -1,7 +1,7 @@
 package luj.game.robot.internal.start.botinstance;
 
 import java.util.Map;
-import luj.net.api.NetConnection;
+import luj.net.api.client.NetConnection;
 
 public class RobotState {
 

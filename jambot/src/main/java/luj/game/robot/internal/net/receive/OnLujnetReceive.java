@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import luj.ava.spring.Internal;
 import luj.cluster.api.actor.ActorPreStartHandler;
 import luj.game.robot.internal.concurrent.instance.receive.BotReceiveProtoMsg;
-import luj.net.api.NetConnection;
+import luj.net.api.client.NetConnection;
 import luj.net.api.data.NetReceiveListener;
 
 @Internal

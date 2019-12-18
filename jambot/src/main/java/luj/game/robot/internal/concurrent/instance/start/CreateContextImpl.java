@@ -6,8 +6,8 @@ import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
-import luj.net.api.NetConnection;
 import luj.net.api.NetContext;
+import luj.net.api.client.NetConnection;
 
 final class CreateContextImpl implements RobotCreateListener.Context {
 

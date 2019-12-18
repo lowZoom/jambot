@@ -1,7 +1,7 @@
 package luj.game.robot.internal.net.send;
 
 import luj.game.robot.api.proto.RobotProtoEncoder;
-import luj.net.api.NetConnection;
+import luj.net.api.client.NetConnection;
 
 public class BotProtoSender {
 

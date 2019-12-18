@@ -7,8 +7,8 @@ import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.CommandExecuteStarter;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
-import luj.net.api.NetConnection;
 import luj.net.api.NetContext;
+import luj.net.api.client.NetConnection;
 
 final class HandlerContextImpl implements RobotProtoHandler.Context {
 
