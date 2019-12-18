@@ -31,6 +31,7 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   public void connect(String host, int port) {
     NetConnection oldConn = _robotState.getConnection();
     oldConn.close();
+
     _robotState.setConnection(_lujnet.createConnection(host, port, oldConn.getApplicationParam()));
   }
 
