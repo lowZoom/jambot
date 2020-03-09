@@ -35,6 +35,9 @@ public class RobotSessionStarter {
     }
   }
 
+  /**
+   * @see luj.game.robot.internal.start.OnLujclusterStart
+   */
   private void startLujcluster(ApplicationContext botCtx, RobotBeanCollector.Result injectRoot) {
     NetContext lujnet = LujNet.create(botCtx);
     BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet);
