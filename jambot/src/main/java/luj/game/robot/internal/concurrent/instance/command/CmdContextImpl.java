@@ -6,13 +6,14 @@ import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 
-final class CommandContextImpl implements RobotCommand.Context {
+final class CmdContextImpl implements RobotCommand.Context {
 
-  CommandContextImpl(RobotState robotState, RobotProtoEncoder protoEncoder,
-      ActorMessageHandler.Ref instanceRef) {
+  CmdContextImpl(RobotState robotState, RobotProtoEncoder protoEncoder,
+      ActorMessageHandler.Ref instanceRef, RobotCommand.Service service) {
     _robotState = robotState;
     _protoEncoder = protoEncoder;
     _instanceRef = instanceRef;
+    _service = service;
   }
 
   @Override
@@ -31,8 +32,15 @@ final class CommandContextImpl implements RobotCommand.Context {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
 
+  @Override
+  public RobotCommand.Service service() {
+    return _service;
+  }
+
   private final RobotState _robotState;
 
   private final RobotProtoEncoder _protoEncoder;
   private final ActorMessageHandler.Ref _instanceRef;
+
+  private final RobotCommand.Service _service;
 }

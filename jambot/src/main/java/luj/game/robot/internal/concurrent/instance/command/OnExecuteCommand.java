@@ -26,8 +26,13 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
       return;
     }
 
-    cmd.onExecute(new CommandContextImpl(actor.getRobotState(),
-        dep.getInjectRoot().getProtoEncoder(), ctx.getActorRef()));
+    cmd.onExecute(new CmdContextImpl(actor.getRobotState(),
+        dep.getInjectRoot().getProtoEncoder(), ctx.getActorRef(), makeService()));
+  }
+
+  private CmdServiceImpl makeService() {
+    CmdRandomImpl randomSvc = new CmdRandomImpl();
+    return new CmdServiceImpl(randomSvc);
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(OnExecuteCommand.class);
