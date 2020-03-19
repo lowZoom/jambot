@@ -36,6 +36,8 @@ public interface RobotCommand {
   interface Random {
 
     int randInt(int minInclude, int maxExclude);
+
+    boolean randBool(double likelihood);
   }
 
   void onExecute(Context ctx);
