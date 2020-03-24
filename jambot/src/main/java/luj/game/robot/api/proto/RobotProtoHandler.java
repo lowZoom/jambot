@@ -12,6 +12,8 @@ public interface RobotProtoHandler<P> {
 
     void connect(String host, int port);
 
+    void disconnect();
+
     void send(Object proto);
 
     ///////////////////////

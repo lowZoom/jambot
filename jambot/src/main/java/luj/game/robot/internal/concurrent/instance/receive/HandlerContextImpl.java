@@ -36,6 +36,12 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
+  public void disconnect() {
+    _robotState.getConnection().close();
+    _robotState.setConnection(null);
+  }
+
+  @Override
   public void send(Object proto) {
     new BotProtoSender(proto, _protoEncoder, _robotState.getConnection()).send();
   }
