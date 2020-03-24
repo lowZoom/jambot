@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Collection;
 import org.springframework.stereotype.Component;
 
 public interface RobotCommand {
@@ -36,6 +37,8 @@ public interface RobotCommand {
     int randInt(int minInclude, int maxExclude);
 
     boolean randBool(double likelihood);
+
+    <T> T randElement(Collection<T> collection);
   }
 
   void onExecute(Context ctx);

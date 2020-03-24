@@ -29,7 +29,7 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
     RobotProtoHandler<?> handler = handlerMap.get(protoType);
 
     if (handler == null) {
-//      LOG.debug("未处理的协议包：{}", proto.getClass().getName());
+//      LOG.debug("未处理的协议包：{}，{}", proto.getClass().getName(), proto);
       return;
     }
 

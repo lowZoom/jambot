@@ -13,7 +13,8 @@ public class CommandExecuteStarter {
 
   public void start() {
     BotExecuteCommandMsg msg = new BotExecuteCommandMsg(_commandType);
-    int delay = 500 + RAND.nextInt(5000);
+    int delay = 250 + RAND.nextInt(5000);
+
     _instanceRef.tell(msg, Duration.ofMillis(delay));
   }
 
