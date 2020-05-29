@@ -3,6 +3,7 @@ package luj.game.robot.internal.session;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import luj.cluster.api.LujCluster;
+import luj.cluster.api.node.ClusterNode;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.internal.session.inject.RobotBeanCollector;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
@@ -11,7 +12,6 @@ import luj.net.api.NetContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class RobotSessionStarter {
 
@@ -21,30 +21,28 @@ public class RobotSessionStarter {
     _appContext = appContext;
   }
 
-  public void start() {
+  public ClusterNode start() {
     RobotBeanCollector.Result root = new RobotBeanCollector(_appContext).collect();
 
     List<RobotStartListener> listenerList = root.getStartListeners();
     if (listenerList.isEmpty()) {
       LOG.warn("没有启动逻辑，机器人结束：{}", RobotStartListener.class.getName());
-      return;
+      return null;
     }
 
-    try (AnnotationConfigApplicationContext botCtx =
-        new AnnotationConfigApplicationContext(InjectConf.class)) {
-      startLujcluster(botCtx, root);
-    }
+    return startLujcluster(_appContext, root);
   }
 
   /**
    * @see luj.game.robot.internal.start.OnLujclusterStart
    */
-  private void startLujcluster(ApplicationContext botCtx, RobotBeanCollector.Result injectRoot) {
+  private ClusterNode startLujcluster(ApplicationContext botCtx,
+      RobotBeanCollector.Result injectRoot) {
     NetContext lujnet = LujNet.create(botCtx);
     BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet);
 
-    LujCluster.start(botCtx).startNode(_host, _port,
-        ImmutableList.of(_host + ":" + _port), botbean);
+    List<String> seeds = ImmutableList.of(_host + ":" + _port);
+    return LujCluster.start(botCtx).startNode(_host, _port, seeds, botbean);
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(RobotSessionStarter.class);
