@@ -1,11 +1,11 @@
 package luj.game.robot.admin.internal.context;
 
 import luj.game.robot.admin.api.AdminContext;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public class AdminContextFactory {
 
-  public AdminContextFactory(ApplicationContext appContext) {
+  public AdminContextFactory(ConfigurableApplicationContext appContext) {
     _appContext = appContext;
   }
 
@@ -13,5 +13,5 @@ public class AdminContextFactory {
     return new ContextImpl(_appContext);
   }
 
-  private final ApplicationContext _appContext;
+  private final ConfigurableApplicationContext _appContext;
 }
