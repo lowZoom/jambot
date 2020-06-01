@@ -1,7 +1,6 @@
 package luj.game.robot.internal.concurrent.instance.start;
 
 import luj.ava.spring.Internal;
-import luj.cluster.api.actor.ActorPreStartHandler;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
@@ -9,20 +8,25 @@ import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoo
 import luj.game.robot.internal.start.botinstance.RobotState;
 
 @Internal
-final class OnInstancePrestart implements ActorPreStartHandler<RobotInstanceActor> {
+final class OnInstancePrestart implements RobotInstanceActor.PreStart {
 
   @Override
   public void onHandle(Context ctx) {
-    RobotInstanceActor instanceActor = ctx.getActorState(this);
-    RobotState robotState = instanceActor.getRobotState();
+    RobotInstanceActor self = ctx.getActorState(this);
+    RobotState robotState = self.getRobotState();
 
-    RobotInstanceDependency dependency = instanceActor.getDependency();
+    Actor selfRef = ctx.getActor();
+    RobotInstanceDependency dependency = self.getDependency();
     RobotInstanceInjectRoot rootBean = dependency.getInjectRoot();
 
-    CreateContextImpl createCtx = new CreateContextImpl(instanceActor,
-        ctx.getActor(), robotState, dependency.getLujnet(), rootBean.getProtoEncoder());
+    // 触发创建监听
+    CreateContextImpl createCtx = new CreateContextImpl(self, selfRef,
+        robotState, dependency.getLujnet(), rootBean.getProtoEncoder());
 
     RobotCreateListener createListener = rootBean.getCreateListener();
     createListener.onCreate(createCtx);
+
+    // 开始心跳
+//    selfRef.tell(BotTickMsg.INSTANCE);
   }
 }

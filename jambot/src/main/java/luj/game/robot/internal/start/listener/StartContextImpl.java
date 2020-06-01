@@ -2,6 +2,7 @@ package luj.game.robot.internal.start.listener;
 
 import luj.cluster.api.node.NodeStartListener;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.start.botinstance.BotInstanceCreator;
 
 final class StartContextImpl implements RobotStartListener.Context {
@@ -12,7 +13,12 @@ final class StartContextImpl implements RobotStartListener.Context {
 
   @Override
   public void createRobot(String robotId) {
-    new BotInstanceCreator(robotId, _parentRef).create();
+    new BotInstanceCreator(robotId, -1, null, _parentRef).create();
+  }
+
+  @Override
+  public void createRobot(BotAction action) {
+    new BotInstanceCreator(null, 0, action, _parentRef).create();
   }
 
   private final NodeStartListener.Actor _parentRef;

@@ -4,14 +4,22 @@ import luj.game.robot.api.action.RobotCommand;
 
 final class CmdServiceImpl implements RobotCommand.Service {
 
-  CmdServiceImpl(RobotCommand.Random randomSvc) {
-    _randomSvc = randomSvc;
+  CmdServiceImpl(RobotCommand.Network network, RobotCommand.Random random) {
+    _network = network;
+    _random = random;
+  }
+
+  @Override
+  public RobotCommand.Network network() {
+    return _network;
   }
 
   @Override
   public RobotCommand.Random random() {
-    return _randomSvc;
+    return _random;
   }
 
-  private final RobotCommand.Random _randomSvc;
+  private final RobotCommand.Network _network;
+
+  private final RobotCommand.Random _random;
 }

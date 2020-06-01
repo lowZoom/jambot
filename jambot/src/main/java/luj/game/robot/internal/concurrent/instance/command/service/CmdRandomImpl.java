@@ -1,10 +1,10 @@
-package luj.game.robot.internal.concurrent.instance.command;
+package luj.game.robot.internal.concurrent.instance.command.service;
 
 import java.util.Collection;
 import java.util.Random;
 import luj.game.robot.api.action.RobotCommand;
 
-final class CmdRandomImpl implements RobotCommand.Random {
+public class CmdRandomImpl implements RobotCommand.Random {
 
   @Override
   public int randInt(int minInclude, int maxExclude) {

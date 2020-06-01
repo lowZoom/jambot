@@ -2,7 +2,7 @@ package luj.game.robot.internal.net.receive;
 
 import io.netty.buffer.ByteBuf;
 import luj.ava.spring.Internal;
-import luj.cluster.api.actor.ActorPreStartHandler;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.receive.BotReceiveProtoMsg;
 import luj.net.api.client.NetConnection;
 import luj.net.api.data.NetReceiveListener;
@@ -17,7 +17,7 @@ final class OnLujnetReceive implements NetReceiveListener {
     dataBuf.readBytes(data);
 
     NetConnection conn = ctx.getConnection();
-    ActorPreStartHandler.Actor instanceRef = conn.getApplicationParam();
+    Tellable instanceRef = conn.getApplicationParam();
 
     BotReceiveProtoMsg msg = new BotReceiveProtoMsg(data);
     instanceRef.tell(msg);

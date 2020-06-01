@@ -19,8 +19,11 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
     RobotState robotState = new RobotState();
     robotState.setDataMap(new HashMap<>());
 
+    robotState.setCurAction(msg.getAction());
+    robotState.setStepIndex(-1);
+
     RobotInstanceActor instanceActor = new RobotInstanceActor(robotState,
-        msg.getRobotId(), parentActor.getInstanceDependency());
+        msg.getRobotId(), msg.getIndex(), parentActor.getInstanceDependency());
 
     List<ActorRef> robotList = parentActor.getRobotList();
     ActorRef robotRef = ctx.createActor(instanceActor);

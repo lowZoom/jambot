@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 import org.springframework.stereotype.Component;
 
-public interface RobotCommand {
+public interface RobotCommand<P> {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -18,18 +18,35 @@ public interface RobotCommand {
 
   interface Context {
 
-    void send(Object proto);
+    <T> T getParam(RobotCommand<T> command);
+
+    int getRobotIndex();
 
     <D> D getData(Class<D> dataType);
 
     void executeCommand(Class<? extends RobotCommand> cmdType);
+
+    /**
+     * @see Network#send
+     */
+    @Deprecated
+    void send(Object proto);
 
     Service service();
   }
 
   interface Service {
 
+    Network network();
+
     Random random();
+  }
+
+  interface Network {
+
+    void connect(String host, int port);
+
+    void send(Object proto);
   }
 
   interface Random {

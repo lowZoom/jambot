@@ -1,15 +1,15 @@
 package luj.game.robot.internal.concurrent.instance;
 
 import java.util.Map;
-import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 import luj.net.api.NetContext;
 
 public class RobotInstanceDependency {
 
   public RobotInstanceDependency(RobotInstanceInjectRoot injectRoot, NetContext lujnet,
-      Map<Class<?>, RobotProtoHandler<?>> protoHandleMap, Map<Class<?>, RobotCommand> commandMap) {
+      Map<Class<?>, RobotProtoHandler<?>> protoHandleMap, CommandMap commandMap) {
     _injectRoot = injectRoot;
     _lujnet = lujnet;
     _protoHandleMap = protoHandleMap;
@@ -28,7 +28,7 @@ public class RobotInstanceDependency {
     return _protoHandleMap;
   }
 
-  public Map<Class<?>, RobotCommand> getCommandMap() {
+  public CommandMap getCommandMap() {
     return _commandMap;
   }
 
@@ -36,5 +36,5 @@ public class RobotInstanceDependency {
   private final NetContext _lujnet;
 
   private final Map<Class<?>, RobotProtoHandler<?>> _protoHandleMap;
-  private final Map<Class<?>, RobotCommand> _commandMap;
+  private final CommandMap _commandMap;
 }

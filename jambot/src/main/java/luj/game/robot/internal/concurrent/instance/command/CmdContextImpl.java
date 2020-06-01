@@ -2,29 +2,39 @@ package luj.game.robot.internal.concurrent.instance.command;
 
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.action.RobotCommand;
-import luj.game.robot.api.proto.RobotProtoEncoder;
-import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 
 final class CmdContextImpl implements RobotCommand.Context {
 
-  CmdContextImpl(RobotState robotState, RobotProtoEncoder protoEncoder,
-      ActorMessageHandler.Ref instanceRef, RobotCommand.Service service) {
-    _robotState = robotState;
-    _protoEncoder = protoEncoder;
+  CmdContextImpl(RobotState botState, int botIndex,
+      ActorMessageHandler.Ref instanceRef, RobotCommand.Service service, Object param) {
+    _botState = botState;
+    _botIndex = botIndex;
     _instanceRef = instanceRef;
     _service = service;
+    _param = param;
   }
 
   @Override
   public void send(Object proto) {
-    new BotProtoSender(proto, _protoEncoder, _robotState.getConnection()).send();
+    _service.network().send(proto);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getParam(RobotCommand<T> command) {
+    return (T) _param;
+  }
+
+  @Override
+  public int getRobotIndex() {
+    return _botIndex;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <D> D getData(Class<D> dataType) {
-    return (D) _robotState.getDataMap().get(dataType);
+    return (D) _botState.getDataMap().get(dataType);
   }
 
   @Override
@@ -37,10 +47,11 @@ final class CmdContextImpl implements RobotCommand.Context {
     return _service;
   }
 
-  private final RobotState _robotState;
+  private final RobotState _botState;
+  private final int _botIndex;
 
-  private final RobotProtoEncoder _protoEncoder;
   private final ActorMessageHandler.Ref _instanceRef;
-
   private final RobotCommand.Service _service;
+
+  private final Object _param;
 }

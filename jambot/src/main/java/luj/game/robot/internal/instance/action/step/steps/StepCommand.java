@@ -1,10 +1,10 @@
-package luj.game.robot.internal.concurrent.instance.command;
+package luj.game.robot.internal.instance.action.step.steps;
 
 import java.util.Map;
 
-public class BotExecuteCommandMsg {
+public class StepCommand {
 
-  public BotExecuteCommandMsg(Class<?> commandType, Map<String, Object> param) {
+  public StepCommand(Class<?> commandType, Map<String, Object> param) {
     _commandType = commandType;
     _param = param;
   }
