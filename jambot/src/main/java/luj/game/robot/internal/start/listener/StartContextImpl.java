@@ -13,12 +13,12 @@ final class StartContextImpl implements RobotStartListener.Context {
 
   @Override
   public void createRobot(String robotId) {
-    new BotInstanceCreator(robotId, -1, null, _parentRef).create();
+    new BotInstanceCreator(robotId, null, _parentRef).create();
   }
 
   @Override
   public void createRobot(BotAction action) {
-    new BotInstanceCreator(null, 0, action, _parentRef).create();
+    new BotInstanceCreator(null, action, _parentRef).create();
   }
 
   private final NodeStartListener.Actor _parentRef;

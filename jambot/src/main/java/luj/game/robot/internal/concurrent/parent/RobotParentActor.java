@@ -3,6 +3,7 @@ package luj.game.robot.internal.concurrent.parent;
 import akka.actor.ActorRef;
 import java.util.List;
 import luj.cluster.api.actor.ActorMessageHandler;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 
 public class RobotParentActor {
@@ -19,6 +20,22 @@ public class RobotParentActor {
     _robotList = robotList;
   }
 
+  public int getNextIndex() {
+    return _nextIndex;
+  }
+
+  public void setNextIndex(int nextIndex) {
+    _nextIndex = nextIndex;
+  }
+
+  public Tellable getAdminRef() {
+    return _adminRef;
+  }
+
+  public void setAdminRef(Tellable adminRef) {
+    _adminRef = adminRef;
+  }
+
   public RobotInstanceDependency getInstanceDependency() {
     return _instanceDependency;
   }
@@ -28,6 +45,8 @@ public class RobotParentActor {
   }
 
   private List<ActorRef> _robotList;
+  private int _nextIndex;
 
+  private Tellable _adminRef;
   private RobotInstanceDependency _instanceDependency;
 }

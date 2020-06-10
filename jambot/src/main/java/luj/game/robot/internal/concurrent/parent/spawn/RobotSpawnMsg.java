@@ -4,19 +4,14 @@ import luj.game.robot.internal.instance.action.BotAction;
 
 public class RobotSpawnMsg {
 
-  public RobotSpawnMsg(String robotId, int index, BotAction action) {
+  public RobotSpawnMsg(String robotId, BotAction action) {
     _robotId = robotId;
-    _index = index;
     _action = action;
   }
 
   @Deprecated
   public String getRobotId() {
     return _robotId;
-  }
-
-  public int getIndex() {
-    return _index;
   }
 
   public BotAction getAction() {
@@ -26,6 +21,5 @@ public class RobotSpawnMsg {
   @Deprecated
   private final String _robotId;
 
-  private final int _index;
   private final BotAction _action;
 }

@@ -8,10 +8,8 @@ import luj.game.robot.internal.instance.action.BotAction;
 
 public class BotInstanceCreator {
 
-  public BotInstanceCreator(String robotId, int index, BotAction action,
-      NodeStartListener.Actor parentRef) {
+  public BotInstanceCreator(String robotId, BotAction action, NodeStartListener.Actor parentRef) {
     _robotId = robotId;
-    _index = index;
     _action = action;
     _parentRef = parentRef;
   }
@@ -21,15 +19,13 @@ public class BotInstanceCreator {
       checkState(!_action.getStepList().isEmpty(), _action.getName());
     }
 
-    RobotSpawnMsg msg = new RobotSpawnMsg(_robotId, _index, _action);
+    RobotSpawnMsg msg = new RobotSpawnMsg(_robotId, _action);
     _parentRef.tell(msg);
   }
 
   @Deprecated
   private final String _robotId;
 
-  private final int _index;
   private final BotAction _action;
-
   private final NodeStartListener.Actor _parentRef;
 }

@@ -3,7 +3,6 @@ package luj.game.robot.internal.start;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
@@ -26,15 +25,15 @@ final class OnLujclusterStart implements NodeStartListener {
     BotbeanInLujcluster botbean = ctx.getStartParam();
     RobotBeanCollector.Result rootBean = botbean.getInjectRoot();
 
+    BotAdminActor adminActor = new BotAdminActor();
+    Actor adminRef = ctx.createApplicationActor(adminActor);
+
     RobotParentActor parentActor = new RobotParentActor();
     parentActor.setRobotList(new ArrayList<>());
+    parentActor.setAdminRef(adminRef);
     parentActor.setInstanceDependency(collectInstanceDependency(botbean));
+
     Actor parentRef = ctx.createApplicationActor(parentActor);
-
-    BotAdminActor adminActor = new BotAdminActor();
-    adminActor.setRobotSet(new HashSet<>());
-    ctx.createApplicationActor(adminActor);
-
     new BotStartListenTrigger(parentRef, rootBean.getStartListeners()).trigger();
   }
 
