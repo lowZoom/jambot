@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import luj.game.robot.admin.internal.cluster.JambotRef;
 import luj.game.robot.admin.internal.cluster.request.actor.RequestWaitRefHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,16 @@ public class RequestSendAndWaiter {
     recvQueue.clear();
 
     _jambotRef.sendMessage(req, req.getClass(), _waitHolder.getActorRef());
-    return (T) recvQueue.take();
+    return (T) recvQueue.poll(5, TimeUnit.SECONDS);
   }
 
   public Map<Class<?>, BlockingQueue<Object>> getWaitMap() {
     return _waitMap;
   }
 
+  /**
+   * @see luj.game.robot.admin.internal.cluster.request.actor.AdminResponseHandler#onHandle
+   */
   private final Map<Class<?>, BlockingQueue<Object>> _waitMap = new ConcurrentHashMap<>();
 
   @Autowired

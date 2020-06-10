@@ -6,7 +6,7 @@ import luj.ava.spring.Internal;
 import luj.game.robot.internal.admin.actor.AdminResponseMsg;
 
 @Internal
-public class AdminResponseHandler implements RequestWaitActor.Handler<AdminResponseMsg> {
+final class AdminResponseHandler implements RequestWaitActor.Handler<AdminResponseMsg> {
 
   @Override
   public void onHandle(Context ctx) {

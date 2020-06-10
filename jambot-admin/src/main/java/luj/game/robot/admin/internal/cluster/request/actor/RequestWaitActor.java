@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.cluster.api.actor.ActorPreStartHandler;
-import luj.game.robot.admin.internal.web.cluster.RequestSendAndWaiter;
 
 public class RequestWaitActor {
 
@@ -33,7 +32,7 @@ public class RequestWaitActor {
   }
 
   /**
-   * @see RequestSendAndWaiter#_waitMap
+   * @see luj.game.robot.admin.internal.web.cluster.RequestSendAndWaiter#_waitMap
    */
   private Map<Class<?>, BlockingQueue<Object>> _waitMap;
 
