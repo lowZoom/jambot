@@ -2,6 +2,7 @@ package luj.game.robot.internal.concurrent.instance;
 
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.cluster.api.actor.ActorPreStartHandler;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.start.botinstance.RobotState;
 
 public class RobotInstanceActor {
@@ -15,11 +16,12 @@ public class RobotInstanceActor {
   }
 
   public RobotInstanceActor(RobotState robotState, String instanceId,
-      int index, RobotInstanceDependency dependency) {
+      Integer index, RobotInstanceDependency dependency, Tellable adminRef) {
     _robotState = robotState;
     _instanceId = instanceId;
     _index = index;
     _dependency = dependency;
+    _adminRef = adminRef;
   }
 
   public RobotState getRobotState() {
@@ -31,7 +33,7 @@ public class RobotInstanceActor {
     return _instanceId;
   }
 
-  public int getIndex() {
+  public Integer getIndex() {
     return _index;
   }
 
@@ -39,11 +41,16 @@ public class RobotInstanceActor {
     return _dependency;
   }
 
+  public Tellable getAdminRef() {
+    return _adminRef;
+  }
+
   private final RobotState _robotState;
 
   @Deprecated
   private final String _instanceId;
-  private final int _index;
+  private final Integer _index;
 
   private final RobotInstanceDependency _dependency;
+  private final Tellable _adminRef;
 }

@@ -14,5 +14,6 @@ final class UpdateInstanceHandler implements BotAdminActor.Handler<UpdateInstanc
 
     Integer index = msg.index();
     AdminBotInfo instance = self.getInstanceMap().computeIfAbsent(index, AdminBotInfo::new);
+    instance.setConnected(msg.isConnected());
   }
 }

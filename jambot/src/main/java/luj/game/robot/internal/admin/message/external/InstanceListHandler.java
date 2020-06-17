@@ -32,7 +32,7 @@ final class InstanceListHandler implements BotAdminActor.Handler<InstanceListReq
   private InstanceListRsp.Bot encodeInstance(AdminBotInfo info) {
     return _lujbean.createBean(InstanceListRsp.Bot.class, (f, b) -> f
         .set(b::index, info.getIndex())
-        .set(b::connected, Boolean.FALSE)
+        .set(b::connected, info.isConnected())
     ).getInstance();
   }
 

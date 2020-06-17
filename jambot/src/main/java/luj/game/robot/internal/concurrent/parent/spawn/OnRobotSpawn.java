@@ -34,8 +34,8 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
     int index = self.getNextIndex();
     self.setNextIndex(index + 1);
 
-    return new RobotInstanceActor(robotState,
-        msg.getRobotId(), index, self.getInstanceDependency());
+    return new RobotInstanceActor(robotState, msg.getRobotId(),
+        index, self.getInstanceDependency(), self.getAdminRef());
   }
 
   private void updateAdmin(RobotParentActor self, RobotInstanceActor instance) {

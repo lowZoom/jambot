@@ -41,7 +41,7 @@ public class InstanceListFiller {
         .collect(toList());
   }
 
-  interface F extends Function<InstanceListRsp.Bot, Object> {
+  private interface F extends Function<InstanceListRsp.Bot, Object> {
     // NOOP
   }
 

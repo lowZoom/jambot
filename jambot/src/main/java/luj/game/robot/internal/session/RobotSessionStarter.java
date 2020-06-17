@@ -2,6 +2,8 @@ package luj.game.robot.internal.session;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
+import luj.bean.api.BeanContext;
+import luj.bean.api.LujBean;
 import luj.cluster.api.LujCluster;
 import luj.cluster.api.node.ClusterNode;
 import luj.game.robot.api.boot.RobotStartListener;
@@ -39,7 +41,8 @@ public class RobotSessionStarter {
   private ClusterNode startLujcluster(ApplicationContext botCtx,
       RobotBeanCollector.Result injectRoot) {
     NetContext lujnet = LujNet.create(botCtx);
-    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet);
+    BeanContext lujbean = LujBean.start();
+    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet, lujbean);
 
     List<String> seeds = ImmutableList.of(_host + ":" + _port);
     return LujCluster.start(botCtx).startNode(_host, _port, seeds, botbean);
