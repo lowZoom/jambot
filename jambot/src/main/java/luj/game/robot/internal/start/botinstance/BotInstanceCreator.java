@@ -1,31 +1,30 @@
 package luj.game.robot.internal.start.botinstance;
 
-import static com.google.common.base.Preconditions.checkState;
-
-import luj.cluster.api.node.NodeStartListener;
+import java.util.Map;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.parent.spawn.RobotSpawnMsg;
-import luj.game.robot.internal.instance.action.BotAction;
+import luj.game.robot.internal.instance.config.StatusConf;
 
 public class BotInstanceCreator {
 
-  public BotInstanceCreator(String robotId, BotAction action, NodeStartListener.Actor parentRef) {
+  public BotInstanceCreator(String robotId, String initStatus,
+      Map<String, StatusConf> statusMap, Tellable parentRef) {
     _robotId = robotId;
-    _action = action;
+    _initStatus = initStatus;
+    _statusMap = statusMap;
     _parentRef = parentRef;
   }
 
   public void create() {
-    if (_action != null) {
-      checkState(!_action.getStepList().isEmpty(), _action.getName());
-    }
-
-    RobotSpawnMsg msg = new RobotSpawnMsg(_robotId, _action);
+    RobotSpawnMsg msg = new RobotSpawnMsg(_robotId, _initStatus, _statusMap);
     _parentRef.tell(msg);
   }
 
   @Deprecated
   private final String _robotId;
 
-  private final BotAction _action;
-  private final NodeStartListener.Actor _parentRef;
+  private final String _initStatus;
+  private final Map<String, StatusConf> _statusMap;
+
+  private final Tellable _parentRef;
 }

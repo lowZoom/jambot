@@ -1,12 +1,14 @@
 package luj.game.robot.internal.concurrent.parent.spawn;
 
-import luj.game.robot.internal.instance.action.BotAction;
+import java.util.Map;
+import luj.game.robot.internal.instance.config.StatusConf;
 
 public class RobotSpawnMsg {
 
-  public RobotSpawnMsg(String robotId, BotAction action) {
+  public RobotSpawnMsg(String robotId, String initStatus, Map<String, StatusConf> statusMap) {
     _robotId = robotId;
-    _action = action;
+    _initStatus = initStatus;
+    _statusMap = statusMap;
   }
 
   @Deprecated
@@ -14,12 +16,17 @@ public class RobotSpawnMsg {
     return _robotId;
   }
 
-  public BotAction getAction() {
-    return _action;
+  public String getInitStatus() {
+    return _initStatus;
+  }
+
+  public Map<String, StatusConf> getStatusMap() {
+    return _statusMap;
   }
 
   @Deprecated
   private final String _robotId;
 
-  private final BotAction _action;
+  private final String _initStatus;
+  private final Map<String, StatusConf> _statusMap;
 }

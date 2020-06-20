@@ -1,6 +1,7 @@
 package luj.game.robot.internal.start.listener;
 
 import java.util.List;
+import luj.cluster.api.actor.Tellable;
 import luj.cluster.api.node.NodeStartListener;
 import luj.game.robot.api.boot.RobotStartListener;
 
@@ -20,7 +21,7 @@ public class BotStartListenTrigger {
     }
   }
 
-  private final NodeStartListener.Actor _parentRef;
+  private final Tellable _parentRef;
 
   private final List<RobotStartListener> _listenerList;
 }

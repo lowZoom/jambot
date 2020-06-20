@@ -1,5 +1,6 @@
 package luj.game.robot.internal.start.botinstance;
 
+import java.util.List;
 import java.util.Map;
 import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
@@ -49,6 +50,9 @@ public class RobotState {
 
   private NetConnection _connection;
   private Map<Class<?>, Object> _dataMap;
+
+  private String _status;
+  private Map<String, List<BotAction>> _statusActionMap;
 
   private BotAction _curAction;
   private ActionStep _curStep;

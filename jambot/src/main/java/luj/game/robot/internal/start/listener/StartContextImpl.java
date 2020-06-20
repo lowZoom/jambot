@@ -1,25 +1,30 @@
 package luj.game.robot.internal.start.listener;
 
-import luj.cluster.api.node.NodeStartListener;
+import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.api.boot.RobotStartListener;
-import luj.game.robot.internal.instance.action.BotAction;
+import luj.game.robot.internal.instance.config.BotConf;
+import luj.game.robot.internal.start.botgroup.BotGroupCreator;
 import luj.game.robot.internal.start.botinstance.BotInstanceCreator;
 
 final class StartContextImpl implements RobotStartListener.Context {
 
-  StartContextImpl(NodeStartListener.Actor parentRef) {
+  StartContextImpl(Tellable parentRef) {
     _parentRef = parentRef;
   }
 
   @Override
   public void createRobot(String robotId) {
-    new BotInstanceCreator(robotId, null, _parentRef).create();
+    new BotInstanceCreator(robotId, null, ImmutableMap.of(), _parentRef).create();
   }
 
   @Override
-  public void createRobot(BotAction action) {
-    new BotInstanceCreator(null, action, _parentRef).create();
+  public void createRobot(List<BotConf> conf) {
+    for (BotConf c : conf) {
+      new BotGroupCreator(c, _parentRef).create();
+    }
   }
 
-  private final NodeStartListener.Actor _parentRef;
+  private final Tellable _parentRef;
 }

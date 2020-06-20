@@ -28,14 +28,15 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
   private RobotInstanceActor createInstance(RobotParentActor self, RobotSpawnMsg msg) {
     RobotState robotState = new RobotState();
     robotState.setDataMap(new HashMap<>());
-    robotState.setCurAction(msg.getAction());
+
+//    robotState.setCurAction(msg.getAction());
     robotState.setStepIndex(-1);
 
-    int index = self.getNextIndex();
-    self.setNextIndex(index + 1);
+    int robotIndex = self.getNextIndex();
+    self.setNextIndex(robotIndex + 1);
 
     return new RobotInstanceActor(robotState, msg.getRobotId(),
-        index, self.getInstanceDependency(), self.getAdminRef());
+        robotIndex, self.getInstanceDependency(), self.getAdminRef());
   }
 
   private void updateAdmin(RobotParentActor self, RobotInstanceActor instance) {

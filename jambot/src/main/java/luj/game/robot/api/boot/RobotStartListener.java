@@ -1,6 +1,7 @@
 package luj.game.robot.api.boot;
 
-import luj.game.robot.internal.instance.action.BotAction;
+import java.util.List;
+import luj.game.robot.internal.instance.config.BotConf;
 
 public interface RobotStartListener {
 
@@ -8,7 +9,7 @@ public interface RobotStartListener {
 
     void createRobot(String robotId);
 
-    void createRobot(BotAction action);
+    void createRobot(List<BotConf> conf);
   }
 
   void onStart(Context ctx);

@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Collection;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 public interface RobotCommand<P> {
@@ -47,6 +48,15 @@ public interface RobotCommand<P> {
     void connect(String host, int port);
 
     void send(Object proto);
+
+    Http http();
+  }
+
+  interface Http {
+
+    String request(String url);
+
+    Map<String, Object> requestJsonMap(String url);
   }
 
   interface Random {

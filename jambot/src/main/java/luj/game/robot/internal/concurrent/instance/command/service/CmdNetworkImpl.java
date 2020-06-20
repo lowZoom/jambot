@@ -29,6 +29,11 @@ public class CmdNetworkImpl implements RobotCommand.Network {
     new BotProtoSender(proto, _protoEncoder, _robotState.getConnection()).send();
   }
 
+  @Override
+  public RobotCommand.Http http() {
+    return new NetworkHttpImpl();
+  }
+
   private final NetContext _lujnet;
   private final Tellable _instanceRef;
 
