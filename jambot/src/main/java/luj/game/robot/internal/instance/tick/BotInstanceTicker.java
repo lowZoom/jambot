@@ -2,7 +2,9 @@ package luj.game.robot.internal.instance.tick;
 
 import java.util.List;
 import luj.cluster.api.actor.ActorMessageHandler;
+import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
+import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.action.step.StepType;
 import luj.game.robot.internal.instance.action.step.steps.StepCommand;
@@ -18,7 +20,11 @@ public class BotInstanceTicker {
   }
 
   public void tick() {
-    ActionStep nextStep = getNextStep();
+    String curStatus = _botState.getStatus();
+    List<BotAction> actionList = _botState.getStatusMap().get(curStatus).getActionList();
+
+    BotAction curAction = actionList.get(_botState.getActionIndex());
+    ActionStep nextStep = getNextStep(curAction);
     StepType type = nextStep.getType();
     LOG.debug("{}", type);
 
@@ -30,11 +36,11 @@ public class BotInstanceTicker {
     }
   }
 
-  private ActionStep getNextStep() {
+  private ActionStep getNextStep(BotAction curAction) {
     int oldIndex = _botState.getStepIndex();
     int nextIndex = oldIndex + 1;
 
-    List<ActionStep> stepList = _botState.getCurAction().getStepList();
+    List<ActionStep> stepList = curAction.getStepList();
     if (nextIndex >= stepList.size()) {
       return stepList.get(oldIndex);
     }
@@ -50,5 +56,5 @@ public class BotInstanceTicker {
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);
 
   private final RobotState _botState;
-  private final ActorMessageHandler.Ref _instanceRef;
+  private final Tellable _instanceRef;
 }

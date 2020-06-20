@@ -14,6 +14,10 @@ public class StatusConf {
     return _key;
   }
 
+  public List<BotAction> getActionList() {
+    return _actionList;
+  }
+
   private final String _key;
 
   private final List<BotAction> _actionList;

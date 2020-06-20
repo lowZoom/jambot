@@ -4,10 +4,15 @@ import java.util.Map;
 
 public class BotConf {
 
-  public BotConf(int amount, String initStatus, Map<String, StatusConf> statusMap) {
+  public BotConf(String name, int amount, String initStatus, Map<String, StatusConf> statusMap) {
+    _name = name;
     _amount = amount;
     _initStatus = initStatus;
     _statusMap = statusMap;
+  }
+
+  public String getName() {
+    return _name;
   }
 
   public int getAmount() {
@@ -22,6 +27,7 @@ public class BotConf {
     return _statusMap;
   }
 
+  private final String _name;
   private final int _amount;
 
   private final String _initStatus;

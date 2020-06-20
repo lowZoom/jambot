@@ -29,6 +29,9 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
     RobotState robotState = new RobotState();
     robotState.setDataMap(new HashMap<>());
 
+    robotState.setStatus(msg.getInitStatus());
+    robotState.setStatusMap(msg.getStatusMap());
+
 //    robotState.setCurAction(msg.getAction());
     robotState.setStepIndex(-1);
 

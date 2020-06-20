@@ -12,10 +12,7 @@ final class NetworkHttpImpl implements RobotCommand.Http {
   @Override
   public String request(String url) {
     try {
-      return OKHTTP.newCall(new Request.Builder().url(url).build())
-          .execute()
-          .body()
-          .string();
+      return OKHTTP.newCall(new Request.Builder().url(url).build()).execute().body().string();
     } catch (IOException e) {
       throw new UnsupportedOperationException(e);
     }
@@ -24,7 +21,7 @@ final class NetworkHttpImpl implements RobotCommand.Http {
   @Override
   public Map<String, Object> requestJsonMap(String url) {
     try {
-      return JACKSON.readValue(request(url), Map.class);
+      return JACKSON.readValue(request(url).trim(), Map.class);
     } catch (IOException e) {
       throw new UnsupportedOperationException(e);
     }
