@@ -35,8 +35,8 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
 
     RobotState robotState = actor.getRobotState();
 
-    handler.onHandle(new HandlerContextImpl(proto, robotState,
-        instanceDep.getLujnet(), injectRoot.getProtoEncoder(), ctx.getActorRef()));
+    handler.onHandle(new HandlerContextImpl(proto, robotState, instanceDep.getLujnet(),
+        injectRoot.getProtoEncoder(), ctx.getActorRef(), instanceDep.getLujbean()));
   }
 
 //  private static final Logger LOG = LoggerFactory.getLogger(OnReceiveProto.class);

@@ -1,10 +1,12 @@
 package luj.game.robot.internal.concurrent.instance.receive;
 
+import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.CommandExecuteStarter;
+import luj.game.robot.internal.concurrent.instance.status.ChangeStatusRequestor;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import luj.net.api.NetContext;
@@ -13,12 +15,13 @@ import luj.net.api.client.NetConnection;
 final class HandlerContextImpl implements RobotProtoHandler.Context {
 
   HandlerContextImpl(Object proto, RobotState robotState, NetContext lujnet,
-      RobotProtoEncoder protoEncoder, ActorMessageHandler.Ref instanceRef) {
+      RobotProtoEncoder protoEncoder, ActorMessageHandler.Ref instanceRef, BeanContext lujbean) {
     _proto = proto;
     _robotState = robotState;
     _lujnet = lujnet;
     _protoEncoder = protoEncoder;
     _instanceRef = instanceRef;
+    _lujbean = lujbean;
   }
 
   @SuppressWarnings("unchecked")
@@ -58,6 +61,11 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
+  public void changeStatus(String status) {
+    new ChangeStatusRequestor(_instanceRef, status, _lujbean).request();
+  }
+
+  @Override
   public void executeCommand(Class<? extends RobotCommand> cmdType) {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
@@ -69,4 +77,5 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   private final RobotProtoEncoder _protoEncoder;
 
   private final ActorMessageHandler.Ref _instanceRef;
+  private final BeanContext _lujbean;
 }

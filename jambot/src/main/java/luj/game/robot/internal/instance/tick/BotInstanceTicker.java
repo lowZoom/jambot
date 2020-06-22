@@ -1,7 +1,6 @@
 package luj.game.robot.internal.instance.tick;
 
 import java.util.List;
-import luj.cluster.api.actor.ActorMessageHandler;
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
 import luj.game.robot.internal.instance.action.BotAction;
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class BotInstanceTicker {
 
-  public BotInstanceTicker(RobotState botState, ActorMessageHandler.Ref instanceRef) {
+  public BotInstanceTicker(RobotState botState, Tellable instanceRef) {
     _botState = botState;
     _instanceRef = instanceRef;
   }
