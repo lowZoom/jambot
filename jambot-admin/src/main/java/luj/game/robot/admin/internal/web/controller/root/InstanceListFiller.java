@@ -37,7 +37,7 @@ public class InstanceListFiller {
         .collect(toList());
 
     return instanceList.stream()
-        .map(b -> fieldGetter.stream().map(g -> g.apply(b).toString()).collect(toList()))
+        .map(b -> fieldGetter.stream().map(g -> String.valueOf(g.apply(b))).collect(toList()))
         .collect(toList());
   }
 
@@ -48,6 +48,7 @@ public class InstanceListFiller {
   private static final Object[][] FIELDS = {
       {"序号", (F) InstanceListRsp.Bot::index},
       {"已连接", (F) InstanceListRsp.Bot::connected},
+      {"状态", (F) InstanceListRsp.Bot::status},
   };
 
   private final RequestSendAndWaiter _reqSender;
