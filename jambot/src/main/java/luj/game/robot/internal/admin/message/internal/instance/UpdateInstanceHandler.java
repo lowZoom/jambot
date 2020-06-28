@@ -1,4 +1,4 @@
-package luj.game.robot.internal.admin.message.internal.count;
+package luj.game.robot.internal.admin.message.internal.instance;
 
 import luj.ava.spring.Internal;
 import luj.game.robot.internal.admin.actor.AdminBotInfo;
@@ -14,6 +14,8 @@ final class UpdateInstanceHandler implements BotAdminActor.Handler<UpdateInstanc
 
     Integer index = msg.index();
     AdminBotInfo instance = self.getInstanceMap().computeIfAbsent(index, AdminBotInfo::new);
+
     instance.setConnected(msg.isConnected());
+    instance.setStatus(msg.status());
   }
 }

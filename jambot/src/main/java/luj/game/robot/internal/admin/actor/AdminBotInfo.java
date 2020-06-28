@@ -14,11 +14,20 @@ public class AdminBotInfo {
     _connected = connected;
   }
 
+  public String getStatus() {
+    return _status;
+  }
+
+  public void setStatus(String status) {
+    _status = status;
+  }
+
   public int getIndex() {
     return _index;
   }
 
   private boolean _connected;
+  private String _status;
 
   private final int _index;
 }

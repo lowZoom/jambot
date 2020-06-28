@@ -35,14 +35,12 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     RobotState botState = self.getRobotState();
 
     cmd.getInstance().onExecute(new CmdContextImpl(botState, self.getIndex(), selfRef,
-        makeService(selfRef, botState, dep), createParam(cmd.getParamType(), msg.getParam())));
+        makeService(selfRef, botState, dep), msg.getParam()));
   }
 
   private CmdServiceImpl makeService(Ref instanceRef, RobotState botState,
       RobotInstanceDependency dep) {
-    CmdNetworkImpl network = new CmdNetworkImpl(dep.getLujnet(), instanceRef, botState,
-        dep.getInjectRoot().getProtoEncoder());
-
+    CmdNetworkImpl network = new CmdNetworkImpl(instanceRef, botState, dep);
     CmdRandomImpl random = new CmdRandomImpl();
     return new CmdServiceImpl(network, random);
   }

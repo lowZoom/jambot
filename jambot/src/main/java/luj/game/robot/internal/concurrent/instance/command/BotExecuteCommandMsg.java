@@ -1,10 +1,8 @@
 package luj.game.robot.internal.concurrent.instance.command;
 
-import java.util.Map;
-
 public class BotExecuteCommandMsg {
 
-  public BotExecuteCommandMsg(Class<?> commandType, Map<String, Object> param) {
+  public BotExecuteCommandMsg(Class<?> commandType, Object param) {
     _commandType = commandType;
     _param = param;
   }
@@ -13,11 +11,11 @@ public class BotExecuteCommandMsg {
     return _commandType;
   }
 
-  public Map<String, Object> getParam() {
+  public Object getParam() {
     return _param;
   }
 
   private final Class<?> _commandType;
 
-  private final Map<String, Object> _param;
+  private final Object _param;
 }

@@ -54,8 +54,12 @@ public interface RobotCommand<P> {
 
   interface Http {
 
+    void request(String url, Class<? extends RobotCommand<?>> handler);
+
+    @Deprecated
     String request(String url);
 
+    @Deprecated
     Map<String, Object> requestJsonMap(String url);
   }
 

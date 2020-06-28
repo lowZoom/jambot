@@ -4,6 +4,7 @@ import luj.ava.spring.Internal;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
+import luj.game.robot.internal.concurrent.instance.tick.BotTickMsg;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 import luj.game.robot.internal.start.botinstance.RobotState;
 
@@ -21,7 +22,7 @@ final class OnInstancePrestart implements RobotInstanceActor.PreStart {
 
     // 触发创建监听
     CreateContextImpl createCtx = new CreateContextImpl(self, selfRef, robotState,
-        dependency.getLujnet(), rootBean.getProtoEncoder(), dependency.getLujbean());
+        dependency.getLujnet(), rootBean.getProtoEncoder());
 
     RobotCreateListener createListener = rootBean.getCreateListener();
     createListener.onCreate(createCtx);

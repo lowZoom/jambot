@@ -3,6 +3,7 @@ package luj.game.robot.internal.concurrent.instance.command.service;
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.proto.RobotProtoEncoder;
+import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import luj.net.api.NetContext;
@@ -10,33 +11,33 @@ import luj.net.api.client.NetConnection;
 
 public class CmdNetworkImpl implements RobotCommand.Network {
 
-  public CmdNetworkImpl(NetContext lujnet, Tellable instanceRef,
-      RobotState robotState, RobotProtoEncoder protoEncoder) {
-    _lujnet = lujnet;
+  public CmdNetworkImpl(Tellable instanceRef, RobotState robotState,
+      RobotInstanceDependency instanceDep) {
     _instanceRef = instanceRef;
     _robotState = robotState;
-    _protoEncoder = protoEncoder;
+    _instanceDep = instanceDep;
   }
 
   @Override
   public void connect(String host, int port) {
-    NetConnection conn = _lujnet.createConnection(host, port, _instanceRef);
+    NetContext lujnet = _instanceDep.getLujnet();
+    NetConnection conn = lujnet.createConnection(host, port, _instanceRef);
     _robotState.setConnection(conn);
   }
 
   @Override
   public void send(Object proto) {
-    new BotProtoSender(proto, _protoEncoder, _robotState.getConnection()).send();
+    RobotProtoEncoder protoEncoder = _instanceDep.getInjectRoot().getProtoEncoder();
+    new BotProtoSender(proto, protoEncoder, _robotState.getConnection()).send();
   }
 
   @Override
   public RobotCommand.Http http() {
-    return new NetworkHttpImpl();
+    return new NetworkHttpImpl(_instanceRef, _instanceDep);
   }
 
-  private final NetContext _lujnet;
   private final Tellable _instanceRef;
-
   private final RobotState _robotState;
-  private final RobotProtoEncoder _protoEncoder;
+
+  private final RobotInstanceDependency _instanceDep;
 }

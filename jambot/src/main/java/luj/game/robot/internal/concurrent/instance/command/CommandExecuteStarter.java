@@ -1,6 +1,5 @@
 package luj.game.robot.internal.concurrent.instance.command;
 
-import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.Random;
 import luj.cluster.api.actor.ActorMessageHandler;
@@ -13,7 +12,7 @@ public class CommandExecuteStarter {
   }
 
   public void start() {
-    BotExecuteCommandMsg msg = new BotExecuteCommandMsg(_commandType, ImmutableMap.of());
+    BotExecuteCommandMsg msg = new BotExecuteCommandMsg(_commandType, null);
     int delay = 250 + RAND.nextInt(5000);
 
     _instanceRef.tell(msg, Duration.ofMillis(delay));

@@ -9,6 +9,8 @@ public interface InstanceListRsp {
     int index();
 
     boolean connected();
+
+    String status();
   }
 
   List<Bot> instanceList();

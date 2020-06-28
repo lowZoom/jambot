@@ -1,8 +1,12 @@
 package luj.game.robot.internal.instance.tick;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
 import luj.cluster.api.actor.Tellable;
+import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
+import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
 import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.action.step.StepType;
@@ -13,14 +17,19 @@ import org.slf4j.LoggerFactory;
 
 public class BotInstanceTicker {
 
-  public BotInstanceTicker(RobotState botState, Tellable instanceRef) {
+  public BotInstanceTicker(RobotState botState, Tellable instanceRef,
+      RobotInstanceDependency instanceDep) {
     _botState = botState;
     _instanceRef = instanceRef;
+    _instanceDep = instanceDep;
   }
 
   public void tick() {
     String curStatus = _botState.getStatus();
     List<BotAction> actionList = _botState.getStatusMap().get(curStatus).getActionList();
+    if (actionList.isEmpty()) {
+      return;
+    }
 
     BotAction curAction = actionList.get(_botState.getActionIndex());
     ActionStep nextStep = getNextStep(curAction);
@@ -49,11 +58,18 @@ public class BotInstanceTicker {
   }
 
   private void typeCommand(StepCommand arg) {
-    _instanceRef.tell(new BotExecuteCommandMsg(arg.getCommandType(), arg.getParam()));
+    Class<?> cmdType = arg.getCommandType();
+    CommandMap.Command cmd = _instanceDep.getCommandMap().get(cmdType);
+    checkNotNull(cmd, cmdType.getName());
+
+    Object param = _instanceDep.getLujbean().create(cmd.getParamType(), arg.getParam());
+    _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);
 
   private final RobotState _botState;
   private final Tellable _instanceRef;
+
+  private final RobotInstanceDependency _instanceDep;
 }

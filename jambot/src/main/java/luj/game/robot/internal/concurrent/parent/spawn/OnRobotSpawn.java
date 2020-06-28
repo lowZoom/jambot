@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import java.util.HashMap;
 import luj.ava.spring.Internal;
 import luj.bean.api.BeanContext;
-import luj.game.robot.internal.admin.message.internal.count.UpdateInstanceMsg;
+import luj.game.robot.internal.admin.message.internal.instance.UpdateInstanceMsg;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.parent.RobotParentActor;
 import luj.game.robot.internal.start.botinstance.RobotState;
@@ -43,9 +43,9 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
   }
 
   private void updateAdmin(RobotParentActor self, RobotInstanceActor instance) {
-    self.getAdminRef().tell(_lujbean.create(UpdateInstanceMsg.class, (b, m) -> b
+    self.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
         .set(m::index, instance.getIndex())
-    ));
+    ).getInstance());
   }
 
   @Autowired

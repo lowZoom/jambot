@@ -1,11 +1,10 @@
 package luj.game.robot.internal.concurrent.instance.start;
 
-import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.ActorPreStartHandler;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.proto.RobotProtoEncoder;
-import luj.game.robot.internal.admin.message.internal.count.UpdateInstanceMsg;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
+import luj.game.robot.internal.concurrent.instance.admin.UpdateAdminMsg;
 import luj.game.robot.internal.net.send.BotProtoSender;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import luj.net.api.NetContext;
@@ -14,14 +13,12 @@ import luj.net.api.client.NetConnection;
 final class CreateContextImpl implements RobotCreateListener.Context {
 
   CreateContextImpl(RobotInstanceActor instanceActor, ActorPreStartHandler.Actor instanceRef,
-      RobotState robotState, NetContext lujnet, RobotProtoEncoder protoEncoder,
-      BeanContext lujbean) {
+      RobotState robotState, NetContext lujnet, RobotProtoEncoder protoEncoder) {
     _instanceActor = instanceActor;
     _instanceRef = instanceRef;
     _robotState = robotState;
     _lujnet = lujnet;
     _protoEncoder = protoEncoder;
-    _lujbean = lujbean;
   }
 
   @Override
@@ -39,10 +36,7 @@ final class CreateContextImpl implements RobotCreateListener.Context {
     NetConnection conn = _lujnet.createConnection(host, port, _instanceRef);
     _robotState.setConnection(conn);
 
-    _instanceActor.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
-        .set(m::index, _instanceActor.getIndex())
-        .set(m::isConnected, true)
-    ).getInstance());
+    _instanceRef.tell(UpdateAdminMsg.INSTANCE);
   }
 
   @Override
@@ -56,6 +50,4 @@ final class CreateContextImpl implements RobotCreateListener.Context {
 
   private final NetContext _lujnet;
   private final RobotProtoEncoder _protoEncoder;
-
-  private final BeanContext _lujbean;
 }

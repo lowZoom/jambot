@@ -13,7 +13,7 @@ final class BotTickHandler implements RobotInstanceActor.Handler<BotTickMsg> {
     RobotInstanceActor self = ctx.getActorState(this);
     Ref selfRef = ctx.getActorRef();
 
-    new BotInstanceTicker(self.getRobotState(), selfRef).tick();
+    new BotInstanceTicker(self.getRobotState(), selfRef, self.getDependency()).tick();
     selfRef.tell(BotTickMsg.INSTANCE, Duration.ofSeconds(2));
   }
 }
