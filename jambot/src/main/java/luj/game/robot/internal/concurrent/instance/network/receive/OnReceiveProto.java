@@ -1,4 +1,4 @@
-package luj.game.robot.internal.concurrent.instance.receive;
+package luj.game.robot.internal.concurrent.instance.network.receive;
 
 import java.util.Map;
 import luj.ava.spring.Internal;
@@ -7,17 +7,16 @@ import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
-import luj.game.robot.internal.start.botinstance.RobotState;
 
 @Internal
 final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProtoMsg> {
 
   @Override
   public void onHandle(Context ctx) throws Exception {
+    RobotInstanceActor self = ctx.getActorState(this);
     BotReceiveProtoMsg msg = ctx.getMessage(this);
-    RobotInstanceActor actor = ctx.getActorState(this);
 
-    RobotInstanceDependency instanceDep = actor.getDependency();
+    RobotInstanceDependency instanceDep = self.getDependency();
     RobotInstanceInjectRoot injectRoot = instanceDep.getInjectRoot();
     RobotProtoDecoder protoDecoder = injectRoot.getProtoDecoder();
 
@@ -33,9 +32,7 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
       return;
     }
 
-    RobotState robotState = actor.getRobotState();
-
-    handler.onHandle(new HandlerContextImpl(proto, robotState, instanceDep.getLujnet(),
+    handler.onHandle(new HandlerContextImpl(proto, self.getRobotState(), instanceDep.getLujnet(),
         injectRoot.getProtoEncoder(), ctx.getActorRef(), instanceDep.getLujbean()));
   }
 

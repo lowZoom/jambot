@@ -21,7 +21,8 @@ final class ChangeStatusHandler implements RobotInstanceActor.Handler<ChangeStat
 
     instanceState.setStatus(newStatus);
     instanceState.setActionIndex(0);
-    instanceState.setStepIndex(0);
+    instanceState.setStepIndex(-1);
+    instanceState.setCurStep(null);
 
     ctx.getActorRef().tell(UpdateAdminMsg.INSTANCE);
   }

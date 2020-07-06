@@ -11,6 +11,9 @@ public class ChangeStatusRequestor {
     _lujbean = lujbean;
   }
 
+  /**
+   * @see ChangeStatusHandler#onHandle
+   */
   public void request() {
     _instanceRef.tell(_lujbean.createBean(ChangeStatusMsg.class, (b, m) -> b
         .set(m::newStatus, _newStatus)

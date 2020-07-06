@@ -2,6 +2,7 @@ package luj.game.robot.internal.session.inject.botinstance;
 
 import luj.ava.spring.Internal;
 import luj.game.robot.api.action.RobotCreateListener;
+import luj.game.robot.api.network.RobotDisconnectListener;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class RobotInstanceInjectRoot {
     return _protoDecoder;
   }
 
+  public RobotDisconnectListener getDisconnectListener() {
+    return _disconnectListener;
+  }
+
   @Autowired
   private RobotCreateListener _createListener;
 
@@ -29,4 +34,7 @@ public class RobotInstanceInjectRoot {
 
   @Autowired
   private RobotProtoDecoder _protoDecoder;
+
+  @Autowired
+  private RobotDisconnectListener _disconnectListener;
 }

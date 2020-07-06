@@ -2,6 +2,7 @@ package luj.game.robot.internal.concurrent.parent.spawn;
 
 import akka.actor.ActorRef;
 import java.util.HashMap;
+import java.util.LinkedList;
 import luj.ava.spring.Internal;
 import luj.bean.api.BeanContext;
 import luj.game.robot.internal.admin.message.internal.instance.UpdateInstanceMsg;
@@ -28,6 +29,7 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
   private RobotInstanceActor createInstance(RobotParentActor self, RobotSpawnMsg msg) {
     RobotState robotState = new RobotState();
     robotState.setDataMap(new HashMap<>());
+    robotState.setReceiveHistory(new LinkedList<>());
 
     robotState.setStatus(msg.getInitStatus());
     robotState.setStatusMap(msg.getStatusMap());

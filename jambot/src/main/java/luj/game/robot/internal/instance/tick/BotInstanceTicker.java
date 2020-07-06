@@ -11,6 +11,9 @@ import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.action.step.StepType;
 import luj.game.robot.internal.instance.action.step.steps.StepCommand;
+import luj.game.robot.internal.instance.tick.step.NextStepGetter;
+import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
+import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +28,27 @@ public class BotInstanceTicker {
   }
 
   public void tick() {
+    if (isWaiting() && !new WaitStepFinishTrier(_botState).tryFinish()) {
+      LOG.debug("等待协议：{}", _botState.getCurStep().getArg());
+      return;
+    }
+
     String curStatus = _botState.getStatus();
     List<BotAction> actionList = _botState.getStatusMap().get(curStatus).getActionList();
     if (actionList.isEmpty()) {
       return;
     }
 
-    BotAction curAction = actionList.get(_botState.getActionIndex());
-    ActionStep nextStep = getNextStep(curAction);
+    NextStepGetter nextStepGetter = new NextStepGetterFactory(_botState, actionList).create();
+    NextStepGetter.Result next = nextStepGetter.getNext();
+
+    BotAction curAction = actionList.get(next.actionIndex());
+    ActionStep nextStep = curAction.getStepList().get(next.stepIndex());
+
+    _botState.setActionIndex(next.actionIndex());
+    _botState.setStepIndex(next.stepIndex());
+    _botState.setCurStep(nextStep);
+
     StepType type = nextStep.getType();
     LOG.debug("{}", type);
 
@@ -44,19 +60,6 @@ public class BotInstanceTicker {
     }
   }
 
-  private ActionStep getNextStep(BotAction curAction) {
-    int oldIndex = _botState.getStepIndex();
-    int nextIndex = oldIndex + 1;
-
-    List<ActionStep> stepList = curAction.getStepList();
-    if (nextIndex >= stepList.size()) {
-      return stepList.get(oldIndex);
-    }
-
-    _botState.setStepIndex(nextIndex);
-    return stepList.get(nextIndex);
-  }
-
   private void typeCommand(StepCommand arg) {
     Class<?> cmdType = arg.getCommandType();
     CommandMap.Command cmd = _instanceDep.getCommandMap().get(cmdType);
@@ -64,6 +67,11 @@ public class BotInstanceTicker {
 
     Object param = _instanceDep.getLujbean().create(cmd.getParamType(), arg.getParam());
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
+  }
+
+  private boolean isWaiting() {
+    ActionStep curStep = _botState.getCurStep();
+    return curStep != null && curStep.getType() == StepType.WAIT;
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);
