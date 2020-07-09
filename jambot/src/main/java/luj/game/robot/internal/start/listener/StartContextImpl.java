@@ -16,7 +16,7 @@ final class StartContextImpl implements RobotStartListener.Context {
 
   @Override
   public void createRobot(String robotId) {
-    new BotInstanceCreator(robotId, null, ImmutableMap.of(), _parentRef).create();
+    new BotInstanceCreator(robotId, null, ImmutableMap.of(), 9, 9, _parentRef).create();
   }
 
   @Override

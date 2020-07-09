@@ -4,6 +4,10 @@ import java.time.Duration;
 import java.util.Random;
 import luj.cluster.api.actor.ActorMessageHandler;
 
+/**
+ * 不应该在内部写死间隔
+ */
+@Deprecated
 public class CommandExecuteStarter {
 
   public CommandExecuteStarter(ActorMessageHandler.Ref instanceRef, Class<?> commandType) {

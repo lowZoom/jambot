@@ -28,6 +28,6 @@ final class OnInstancePrestart implements RobotInstanceActor.PreStart {
     createListener.onCreate(createCtx);
 
     // 开始心跳
-//    selfRef.tell(BotTickMsg.INSTANCE);
+    selfRef.tell(BotTickMsg.INSTANCE);
   }
 }
