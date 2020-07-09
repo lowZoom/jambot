@@ -50,11 +50,15 @@ public class BotInstanceTicker {
     _botState.setCurStep(nextStep);
 
     StepType type = nextStep.getType();
-    LOG.debug("{}", type);
+    LOG.debug("{} -> {}", type, nextStep.getArg());
 
     switch (type) {
       case COMMAND: {
         typeCommand((StepCommand) nextStep.getArg());
+        return;
+      }
+      case WAIT: {
+        new WaitStepFinishTrier(_botState).tryFinish();
         return;
       }
     }
@@ -65,7 +69,10 @@ public class BotInstanceTicker {
     CommandMap.Command cmd = _instanceDep.getCommandMap().get(cmdType);
     checkNotNull(cmd, cmdType.getName());
 
-    Object param = _instanceDep.getLujbean().create(cmd.getParamType(), arg.getParam());
+    Class<?> paramType = cmd.getParamType();
+    Object param = paramType == Void.class ? null :
+        _instanceDep.getLujbean().create(paramType, arg.getParam());
+
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }
 

@@ -26,6 +26,8 @@ public interface RobotProtoHandler<P> {
 
     void changeStatus(String status);
 
+    void finishWait(Class<?> protoType);
+
     void executeCommand(Class<? extends RobotCommand> cmdType);
   }
 

@@ -17,6 +17,11 @@ public class StepCommand {
     return _param;
   }
 
+  @Override
+  public String toString() {
+    return _commandType.getSimpleName() + _param;
+  }
+
   private final Class<?> _commandType;
 
   private final Map<String, Object> _param;

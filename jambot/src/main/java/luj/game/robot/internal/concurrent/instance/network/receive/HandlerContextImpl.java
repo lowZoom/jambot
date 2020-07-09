@@ -66,6 +66,11 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
+  public void finishWait(Class<?> protoType) {
+    _robotState.getReceiveHistory().offer(protoType);
+  }
+
+  @Override
   public void executeCommand(Class<? extends RobotCommand> cmdType) {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }

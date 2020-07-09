@@ -1,12 +1,13 @@
 package luj.game.robot.internal.concurrent.instance.network.receive;
 
 import java.util.Map;
+import java.util.Queue;
 import luj.ava.spring.Internal;
+import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
-import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 
 @Internal
 final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProtoMsg> {
@@ -17,14 +18,23 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
     BotReceiveProtoMsg msg = ctx.getMessage(this);
 
     RobotInstanceDependency instanceDep = self.getDependency();
-    RobotInstanceInjectRoot injectRoot = instanceDep.getInjectRoot();
-    RobotProtoDecoder protoDecoder = injectRoot.getProtoDecoder();
+    RobotProtoDecoder protoDecoder = instanceDep.getInjectRoot().getProtoDecoder();
 
     DecodeContextImpl decodeCtx = new DecodeContextImpl(msg.getProtoData());
     Object proto = protoDecoder.decode(decodeCtx);
-
-    Map<Class<?>, RobotProtoHandler<?>> handlerMap = instanceDep.getProtoHandleMap();
     Class<?> protoType = proto.getClass();
+
+    Queue<Class<?>> history = self.getRobotState().getReceiveHistory();
+    history.offer(protoType);
+
+    handleProto(proto, protoType, self, ctx.getActorRef());
+  }
+
+  private void handleProto(Object proto, Class<?> protoType,
+      RobotInstanceActor self, ActorMessageHandler.Ref selfRef) {
+    RobotInstanceDependency dep = self.getDependency();
+
+    Map<Class<?>, RobotProtoHandler<?>> handlerMap = dep.getProtoHandleMap();
     RobotProtoHandler<?> handler = handlerMap.get(protoType);
 
     if (handler == null) {
@@ -32,8 +42,8 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
       return;
     }
 
-    handler.onHandle(new HandlerContextImpl(proto, self.getRobotState(), instanceDep.getLujnet(),
-        injectRoot.getProtoEncoder(), ctx.getActorRef(), instanceDep.getLujbean()));
+    handler.onHandle(new HandlerContextImpl(proto, self.getRobotState(), dep.getLujnet(),
+        dep.getInjectRoot().getProtoEncoder(), selfRef, dep.getLujbean()));
   }
 
 //  private static final Logger LOG = LoggerFactory.getLogger(OnReceiveProto.class);
