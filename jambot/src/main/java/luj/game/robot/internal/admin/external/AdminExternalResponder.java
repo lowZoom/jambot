@@ -15,7 +15,7 @@ public class AdminExternalResponder {
 
   public void respond() {
     _replyTo.tell(_lujbean.create(AdminResponseMsg.class, (b, m) -> b
-        .set(m::responseType, _rspBean.getType())
+        .set(m::responseType, _rspBean.getBeanType())
         .set(m::responseData, _rspBean.getInstance())
     ));
   }

@@ -23,9 +23,8 @@ final class InstanceListHandler implements BotAdminActor.Handler<InstanceListReq
         .map(this::encodeInstance)
         .collect(Collectors.toList());
 
-    Bean<?> rsp = _lujbean.createBean(InstanceListRsp.class, (f, b) -> f
-        .set(b::instanceList, instanceList)
-    );
+    Bean<InstanceListRsp> rsp = _lujbean.createBean(InstanceListRsp.class);
+    rsp.setField(b -> b::instanceList, instanceList);
     new AdminExternalResponder(rsp, ctx.getSenderRef(), _lujbean).respond();
   }
 
