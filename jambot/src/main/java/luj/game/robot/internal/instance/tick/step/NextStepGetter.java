@@ -28,7 +28,10 @@ public class NextStepGetter {
 
     ResultImpl result = new ResultImpl();
     result._actionIndex = newActionIndex;
-    result._stepIndex = newActionIndex != _oldActionIndex ? 0 : _oldStepIndex + 1;
+
+    result._stepIndex = (newActionIndex != _oldActionIndex) ? 0
+        : (_oldStepIndex + 1) % oldAction.getStepCount();
+
     return result;
   }
 

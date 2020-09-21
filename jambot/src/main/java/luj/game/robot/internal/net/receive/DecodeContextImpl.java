@@ -1,4 +1,4 @@
-package luj.game.robot.internal.concurrent.instance.network.receive;
+package luj.game.robot.internal.net.receive;
 
 import luj.game.robot.api.proto.RobotProtoDecoder;
 

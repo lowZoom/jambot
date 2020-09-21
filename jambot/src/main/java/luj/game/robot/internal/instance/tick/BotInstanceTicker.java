@@ -14,6 +14,7 @@ import luj.game.robot.internal.instance.action.step.steps.StepCommand;
 import luj.game.robot.internal.instance.tick.step.NextStepGetter;
 import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
+import luj.game.robot.internal.instance.tick.wait.WaitingProtoChecker;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,15 +71,14 @@ public class BotInstanceTicker {
     checkNotNull(cmd, cmdType.getName());
 
     Class<?> paramType = cmd.getParamType();
-    Object param = paramType == Void.class ? null :
+    Object param = (paramType == Void.class) ? null :
         _instanceDep.getLujbean().create(paramType, arg.getParam());
 
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }
 
   private boolean isWaiting() {
-    ActionStep curStep = _botState.getCurStep();
-    return curStep != null && curStep.getType() == StepType.WAIT;
+    return new WaitingProtoChecker(_botState).isWaiting();
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);

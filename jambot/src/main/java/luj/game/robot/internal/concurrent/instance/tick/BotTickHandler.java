@@ -2,11 +2,11 @@ package luj.game.robot.internal.concurrent.instance.tick;
 
 import java.time.Duration;
 import java.util.Random;
+import luj.ava.spring.Internal;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.instance.tick.BotInstanceTicker;
-import org.springframework.stereotype.Component;
 
-@Component
+@Internal
 final class BotTickHandler implements RobotInstanceActor.Handler<BotTickMsg> {
 
   @Override

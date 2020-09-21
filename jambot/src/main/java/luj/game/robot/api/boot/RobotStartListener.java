@@ -7,6 +7,7 @@ public interface RobotStartListener {
 
   interface Context {
 
+    @Deprecated
     void createRobot(String robotId);
 
     void createRobot(List<BotConf> conf);

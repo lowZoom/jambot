@@ -1,13 +1,13 @@
 package luj.game.robot.internal.concurrent.instance.status;
 
+import luj.ava.spring.Internal;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.admin.UpdateAdminMsg;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-@Component
+@Internal
 final class ChangeStatusHandler implements RobotInstanceActor.Handler<ChangeStatusMsg> {
 
   @Override

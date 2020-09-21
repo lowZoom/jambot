@@ -55,6 +55,20 @@ class NextStepGetterTest extends Specification {
     result.stepIndex() == 0
   }
 
+  def "GetNext:最后一步下一步_只有一个动作和一步"() {
+    given:
+    _actionList = [[1]]
+    _oldActionIndex = 0
+    _oldStepIndex = 0
+
+    when:
+    def result = getNext()
+
+    then:
+    result.actionIndex() == 0
+    result.stepIndex() == 0
+  }
+
   NextStepGetter.Result getNext() {
     def actionList = _actionList.collect { List l ->
       def result = Stub(NextStepGetter.Action)
