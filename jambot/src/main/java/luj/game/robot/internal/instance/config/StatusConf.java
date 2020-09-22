@@ -5,7 +5,14 @@ import luj.game.robot.internal.instance.action.BotAction;
 
 public class StatusConf {
 
-  public StatusConf(String key, List<BotAction> actionList) {
+  public interface Action {
+
+    BotAction conf();
+
+    Object args();
+  }
+
+  public StatusConf(String key, List<Action> actionList) {
     _key = key;
     _actionList = actionList;
   }
@@ -14,11 +21,11 @@ public class StatusConf {
     return _key;
   }
 
-  public List<BotAction> getActionList() {
+  public List<Action> getActionList() {
     return _actionList;
   }
 
   private final String _key;
 
-  private final List<BotAction> _actionList;
+  private final List<Action> _actionList;
 }

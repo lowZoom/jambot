@@ -11,6 +11,7 @@ import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.action.step.StepType;
 import luj.game.robot.internal.instance.action.step.steps.StepCommand;
+import luj.game.robot.internal.instance.config.StatusConf;
 import luj.game.robot.internal.instance.tick.step.NextStepGetter;
 import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
@@ -29,13 +30,14 @@ public class BotInstanceTicker {
   }
 
   public void tick() {
-    if (isWaiting() && !new WaitStepFinishTrier(_botState).tryFinish()) {
+    if (new WaitingProtoChecker(_botState).isWaiting() && !tryFinishWait()) {
       LOG.debug("等待协议：{}", _botState.getCurStep().getArg());
       return;
     }
 
-    String curStatus = _botState.getStatus();
-    List<BotAction> actionList = _botState.getStatusMap().get(curStatus).getActionList();
+    String curStatusName = _botState.getStatus();
+    StatusConf curStatus = _botState.getStatusMap().get(curStatusName);
+    List<StatusConf.Action> actionList = curStatus.getActionList();
     if (actionList.isEmpty()) {
       return;
     }
@@ -43,7 +45,7 @@ public class BotInstanceTicker {
     NextStepGetter nextStepGetter = new NextStepGetterFactory(_botState, actionList).create();
     NextStepGetter.Result next = nextStepGetter.getNext();
 
-    BotAction curAction = actionList.get(next.actionIndex());
+    BotAction curAction = actionList.get(next.actionIndex()).conf();
     ActionStep nextStep = curAction.getStepList().get(next.stepIndex());
 
     _botState.setActionIndex(next.actionIndex());
@@ -59,7 +61,7 @@ public class BotInstanceTicker {
         return;
       }
       case WAIT: {
-        new WaitStepFinishTrier(_botState).tryFinish();
+        tryFinishWait();
         return;
       }
     }
@@ -77,8 +79,8 @@ public class BotInstanceTicker {
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }
 
-  private boolean isWaiting() {
-    return new WaitingProtoChecker(_botState).isWaiting();
+  private boolean tryFinishWait() {
+    return new WaitStepFinishTrier(_botState, _instanceRef, _instanceDep.getLujbean()).tryFinish();
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);
