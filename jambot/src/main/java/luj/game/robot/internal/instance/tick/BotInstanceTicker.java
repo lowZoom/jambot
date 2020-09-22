@@ -3,6 +3,7 @@ package luj.game.robot.internal.instance.tick;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
+import java.util.OptionalInt;
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
@@ -10,12 +11,14 @@ import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
 import luj.game.robot.internal.instance.action.BotAction;
 import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.action.step.StepType;
+import luj.game.robot.internal.instance.action.step.arg.StepWaitArg;
 import luj.game.robot.internal.instance.action.step.steps.StepCommand;
 import luj.game.robot.internal.instance.config.StatusConf;
 import luj.game.robot.internal.instance.tick.step.NextStepGetter;
 import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
 import luj.game.robot.internal.instance.tick.wait.WaitingProtoChecker;
+import luj.game.robot.internal.start.botinstance.BotCurrentStep;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +33,7 @@ public class BotInstanceTicker {
   }
 
   public void tick() {
-    if (new WaitingProtoChecker(_botState).isWaiting() && !tryFinishWait()) {
-      LOG.debug("等待协议：{}", _botState.getCurStep().getArg());
+    if (handleWait()) {
       return;
     }
 
@@ -39,32 +41,60 @@ public class BotInstanceTicker {
     StatusConf curStatus = _botState.getStatusMap().get(curStatusName);
     List<StatusConf.Action> actionList = curStatus.getActionList();
     if (actionList.isEmpty()) {
+      LOG.warn("状态下没有动作：{}", curStatusName);
       return;
     }
 
     NextStepGetter nextStepGetter = new NextStepGetterFactory(_botState, actionList).create();
     NextStepGetter.Result next = nextStepGetter.getNext();
 
-    BotAction curAction = actionList.get(next.actionIndex()).conf();
-    ActionStep nextStep = curAction.getStepList().get(next.stepIndex());
+    BotAction nextActionConf = actionList.get(next.actionIndex()).conf();
+    ActionStep nextStepConf = nextActionConf.getStepList().get(next.stepIndex());
 
     _botState.setActionIndex(next.actionIndex());
     _botState.setStepIndex(next.stepIndex());
-    _botState.setCurStep(nextStep);
+    _botState.setCurStep(new BotCurrentStep(nextStepConf));
 
-    StepType type = nextStep.getType();
-    LOG.debug("{} -> {}", type, nextStep.getArg());
+    StepType type = nextStepConf.getType();
+    LOG.debug("{} -> {}", type, nextStepConf.getArg());
 
     switch (type) {
       case COMMAND: {
-        typeCommand((StepCommand) nextStep.getArg());
+        typeCommand((StepCommand) nextStepConf.getArg());
         return;
       }
       case WAIT: {
-        tryFinishWait();
+        handleWait();
         return;
       }
     }
+  }
+
+  private boolean handleWait() {
+    if (!new WaitingProtoChecker(_botState).isWaiting()) {
+      return false;
+    }
+
+    if (tryFinishWait()) {
+      return false;
+    }
+
+    BotCurrentStep curStep = _botState.getCurStep();
+    ActionStep stepConf = curStep.getStepConf();
+
+    StepWaitArg waitArg = (StepWaitArg) stepConf.getArg();
+    OptionalInt maxWait = waitArg.maxWait();
+
+    int oldWait = curStep.getWaitCount();
+    if (maxWait.isPresent() && oldWait >= maxWait.getAsInt()) {
+      return false;
+    }
+
+    int newWait = oldWait + 1;
+    curStep.setWaitCount(newWait);
+
+    LOG.debug("等待协议：{}，次数：{}", waitArg.protoType().getName(), newWait);
+    return true;
   }
 
   private void typeCommand(StepCommand arg) {

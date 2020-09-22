@@ -2,7 +2,6 @@ package luj.game.robot.internal.start.botinstance;
 
 import java.util.Map;
 import java.util.Queue;
-import luj.game.robot.internal.instance.action.step.ActionStep;
 import luj.game.robot.internal.instance.config.StatusConf;
 import luj.net.api.client.NetConnection;
 
@@ -56,11 +55,11 @@ public class RobotState {
     return _stepIndex;
   }
 
-  public ActionStep getCurStep() {
+  public BotCurrentStep getCurStep() {
     return _curStep;
   }
 
-  public void setCurStep(ActionStep curStep) {
+  public void setCurStep(BotCurrentStep curStep) {
     _curStep = curStep;
   }
 
@@ -80,7 +79,7 @@ public class RobotState {
 
   private int _actionIndex;
   private int _stepIndex;
-  private ActionStep _curStep;
+  private BotCurrentStep _curStep;
 
   private Queue<Class<?>> _receiveHistory;
 }

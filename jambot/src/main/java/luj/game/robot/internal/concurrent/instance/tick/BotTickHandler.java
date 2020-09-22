@@ -24,7 +24,7 @@ final class BotTickHandler implements RobotInstanceActor.Handler<BotTickMsg> {
     int min = self.getTickMsMin();
     int max = self.getTickMsMax();
 
-    int result = min + RAND.nextInt(max - min);
+    int result = min + RAND.nextInt(max - min + 1);
     return Duration.ofMillis(result);
   }
 

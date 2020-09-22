@@ -21,7 +21,7 @@ public class WaitStepFinishTrier {
   }
 
   public boolean tryFinish() {
-    ActionStep curStep = _botState.getCurStep();
+    ActionStep curStep = _botState.getCurStep().getStepConf();
     StepType stepType = curStep.getType();
     checkState(stepType == StepType.WAIT, stepType);
 
