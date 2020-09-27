@@ -34,8 +34,8 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     Ref selfRef = ctx.getActorRef();
     RobotState botState = self.getRobotState();
 
-    cmd.getInstance().onExecute(new CmdContextImpl(botState, self.getIndex(), selfRef,
-        makeService(selfRef, botState, dep), msg.getParam()));
+    cmd.getInstance().onExecute(new CmdContextImpl(botState, self.getIndex(),
+        selfRef, makeService(selfRef, botState, dep), msg.getParam()));
   }
 
   private CmdServiceImpl makeService(Ref instanceRef, RobotState botState,

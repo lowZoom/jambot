@@ -35,7 +35,7 @@ public class BotProtoReceiver {
     handleProto(proto, protoType);
 
     if (new WaitingProtoChecker(botState).isWaiting()) {
-      new WaitStepFinishTrier(botState, _instanceRef, instanceDep.getLujbean()).tryFinish();
+      new WaitStepFinishTrier(botState, _instanceRef).tryFinish();
     }
   }
 

@@ -56,7 +56,7 @@ public class BotInstanceTicker {
     _botState.setCurStep(new BotCurrentStep(nextStepConf));
 
     StepType type = nextStepConf.getType();
-    LOG.debug("{} -> {}", type, nextStepConf.getArg());
+    LOG.debug("{} -> {}，状态({})", type, nextStepConf.getArg(), curStatusName);
 
     switch (type) {
       case COMMAND: {
@@ -81,10 +81,9 @@ public class BotInstanceTicker {
 
     BotCurrentStep curStep = _botState.getCurStep();
     ActionStep stepConf = curStep.getStepConf();
-
     StepWaitArg waitArg = (StepWaitArg) stepConf.getArg();
-    OptionalInt maxWait = waitArg.maxWait();
 
+    OptionalInt maxWait = waitArg.maxWait();
     int oldWait = curStep.getWaitCount();
     if (maxWait.isPresent() && oldWait >= maxWait.getAsInt()) {
       return false;
@@ -110,7 +109,7 @@ public class BotInstanceTicker {
   }
 
   private boolean tryFinishWait() {
-    return new WaitStepFinishTrier(_botState, _instanceRef, _instanceDep.getLujbean()).tryFinish();
+    return new WaitStepFinishTrier(_botState, _instanceRef).tryFinish();
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(BotInstanceTicker.class);

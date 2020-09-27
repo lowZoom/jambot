@@ -3,7 +3,7 @@ package luj.game.robot.internal.net.disconnect;
 import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.api.network.RobotDisconnectListener;
-import luj.game.robot.internal.concurrent.instance.status.ChangeStatusRequestor;
+import luj.game.robot.internal.instance.status.ChangeStatusRequestor;
 
 final class ContextImpl implements RobotDisconnectListener.Context {
 
