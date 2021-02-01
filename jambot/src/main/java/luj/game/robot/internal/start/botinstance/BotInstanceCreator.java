@@ -7,9 +7,8 @@ import luj.game.robot.internal.instance.config.StatusConf;
 
 public class BotInstanceCreator {
 
-  public BotInstanceCreator(String robotId, String initStatus, Map<String, StatusConf> statusMap,
+  public BotInstanceCreator(String initStatus, Map<String, StatusConf> statusMap,
       double tickSecMin, double tickSecMax, Tellable parentRef) {
-    _robotId = robotId;
     _initStatus = initStatus;
     _statusMap = statusMap;
     _tickSecMin = tickSecMin;
@@ -21,16 +20,13 @@ public class BotInstanceCreator {
     int tickMin = secToMs(_tickSecMin);
     int tickMax = secToMs(_tickSecMax);
 
-    RobotSpawnMsg msg = new RobotSpawnMsg(_robotId, _initStatus, _statusMap, tickMin, tickMax);
+    RobotSpawnMsg msg = new RobotSpawnMsg(_initStatus, _statusMap, tickMin, tickMax);
     _parentRef.tell(msg);
   }
 
   private int secToMs(double sec) {
     return (int) Math.round(sec * 1000);
   }
-
-  @Deprecated
-  private final String _robotId;
 
   private final String _initStatus;
   private final Map<String, StatusConf> _statusMap;

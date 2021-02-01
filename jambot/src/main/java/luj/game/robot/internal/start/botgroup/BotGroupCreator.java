@@ -18,7 +18,7 @@ public class BotGroupCreator {
     LOG.debug("创建机器人组：{}，数量：{}", _conf.getName(), botAmount);
 
     for (int i = 0; i < botAmount; i++) {
-      new BotInstanceCreator(null, _conf.getInitStatus(), _conf.getStatusMap(),
+      new BotInstanceCreator(_conf.getInitStatus(), _conf.getStatusMap(),
           _conf.getTickSecMin(), _conf.getTickSecMax(), _parentRef).create();
     }
   }

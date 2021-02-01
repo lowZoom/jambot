@@ -5,18 +5,12 @@ import luj.game.robot.internal.instance.config.StatusConf;
 
 public class RobotSpawnMsg {
 
-  public RobotSpawnMsg(String robotId, String initStatus,
-      Map<String, StatusConf> statusMap, int tickMsMin, int tickMsMax) {
-    _robotId = robotId;
+  public RobotSpawnMsg(String initStatus, Map<String, StatusConf> statusMap,
+      int tickMsMin, int tickMsMax) {
     _initStatus = initStatus;
     _statusMap = statusMap;
     _tickMsMin = tickMsMin;
     _tickMsMax = tickMsMax;
-  }
-
-  @Deprecated
-  public String getRobotId() {
-    return _robotId;
   }
 
   public String getInitStatus() {
@@ -34,9 +28,6 @@ public class RobotSpawnMsg {
   public int getTickMsMax() {
     return _tickMsMax;
   }
-
-  @Deprecated
-  private final String _robotId;
 
   private final String _initStatus;
   private final Map<String, StatusConf> _statusMap;
