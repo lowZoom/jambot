@@ -2,7 +2,7 @@ package luj.game.robot.internal.instance.status;
 
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.admin.UpdateAdminMsg;
-import luj.game.robot.internal.concurrent.instance.tick.BotTickMsg;
+import luj.game.robot.internal.concurrent.instance.tick.once.BotTickMsg;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

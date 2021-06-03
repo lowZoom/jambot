@@ -4,7 +4,7 @@ import luj.ava.spring.Internal;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
-import luj.game.robot.internal.concurrent.instance.tick.BotTickMsg;
+import luj.game.robot.internal.concurrent.instance.tick.loop.BotTickLoopMsg;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 import luj.game.robot.internal.start.botinstance.RobotState;
 
@@ -28,6 +28,6 @@ final class OnInstancePrestart implements RobotInstanceActor.PreStart {
     createListener.onCreate(createCtx);
 
     // 开始心跳
-    selfRef.tell(BotTickMsg.INSTANCE);
+    selfRef.tell(BotTickLoopMsg.INSTANCE);
   }
 }
