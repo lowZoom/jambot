@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.Map;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 public interface RobotCommand<P> {
@@ -24,6 +25,8 @@ public interface RobotCommand<P> {
     int getRobotIndex();
 
     <D> D getData(Class<D> dataType);
+
+    Logger getLogger();
 
     void executeCommand(Class<? extends RobotCommand> cmdType);
 

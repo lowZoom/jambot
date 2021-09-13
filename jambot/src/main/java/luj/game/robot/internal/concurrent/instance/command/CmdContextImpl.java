@@ -3,17 +3,9 @@ package luj.game.robot.internal.concurrent.instance.command;
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.internal.start.botinstance.RobotState;
+import org.slf4j.Logger;
 
 final class CmdContextImpl implements RobotCommand.Context {
-
-  CmdContextImpl(RobotState botState, int botIndex,
-      ActorMessageHandler.Ref instanceRef, RobotCommand.Service service, Object param) {
-    _botState = botState;
-    _botIndex = botIndex;
-    _instanceRef = instanceRef;
-    _service = service;
-    _param = param;
-  }
 
   @Override
   public void send(Object proto) {
@@ -38,6 +30,11 @@ final class CmdContextImpl implements RobotCommand.Context {
   }
 
   @Override
+  public Logger getLogger() {
+    return _logger;
+  }
+
+  @Override
   public void executeCommand(Class<? extends RobotCommand> cmdType) {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
@@ -47,11 +44,12 @@ final class CmdContextImpl implements RobotCommand.Context {
     return _service;
   }
 
-  private final RobotState _botState;
-  private final int _botIndex;
+  RobotState _botState;
+  int _botIndex;
 
-  private final ActorMessageHandler.Ref _instanceRef;
-  private final RobotCommand.Service _service;
+  ActorMessageHandler.Ref _instanceRef;
+  RobotCommand.Service _service;
 
-  private final Object _param;
+  Object _param;
+  Logger _logger;
 }

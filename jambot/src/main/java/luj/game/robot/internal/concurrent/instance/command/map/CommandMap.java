@@ -1,6 +1,7 @@
 package luj.game.robot.internal.concurrent.instance.command.map;
 
 import luj.game.robot.api.action.RobotCommand;
+import org.slf4j.Logger;
 
 public interface CommandMap {
 
@@ -11,6 +12,8 @@ public interface CommandMap {
     Class<?> getCommandType();
 
     Class<?> getParamType();
+
+    Logger getLogger();
   }
 
   Command get(Class<?> commandType);

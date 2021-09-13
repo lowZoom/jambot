@@ -31,11 +31,20 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
       return;
     }
 
-    Ref selfRef = ctx.getActorRef();
-    RobotState botState = self.getRobotState();
+    CmdContextImpl execCtx = new CmdContextImpl();
+    execCtx._botIndex = self.getIndex();
 
-    cmd.getInstance().onExecute(new CmdContextImpl(botState, self.getIndex(),
-        selfRef, makeService(selfRef, botState, dep), msg.getParam()));
+    RobotState botState = self.getRobotState();
+    execCtx._botState = botState;
+
+    Ref selfRef = ctx.getActorRef();
+    execCtx._instanceRef = selfRef;
+    execCtx._service = makeService(selfRef, botState, dep);
+
+    execCtx._param = msg.getParam();
+    execCtx._logger = cmd.getLogger();
+
+    cmd.getInstance().onExecute(execCtx);
   }
 
   private CmdServiceImpl makeService(Ref instanceRef, RobotState botState,

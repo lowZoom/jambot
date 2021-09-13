@@ -7,6 +7,7 @@ import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.internal.session.inject.RobotBeanCollector;
+import org.slf4j.LoggerFactory;
 
 public class CommandMapFactory {
 
@@ -28,6 +29,7 @@ public class CommandMapFactory {
 
     Class<?> cmdType = cmdInstance.getClass();
     cmd._commandType = cmdType;
+    cmd._logger = LoggerFactory.getLogger(cmdType);
 
     cmd._paramType = TypeX.of(cmdType)
         .getSupertype(RobotCommand.class)
