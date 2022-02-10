@@ -5,7 +5,7 @@ import java.util.Random;
 import luj.cluster.api.actor.ActorMessageHandler;
 
 /**
- * 不应该在内部写死间隔
+ * FIXME: 不应该在内部写死间隔
  */
 @Deprecated
 public class CommandExecuteStarter {

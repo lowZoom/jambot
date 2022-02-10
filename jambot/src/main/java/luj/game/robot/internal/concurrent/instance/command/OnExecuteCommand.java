@@ -1,8 +1,6 @@
 package luj.game.robot.internal.concurrent.instance.command;
 
-import java.util.Map;
 import luj.ava.spring.Internal;
-import luj.bean.api.BeanContext;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
@@ -11,7 +9,6 @@ import luj.game.robot.internal.concurrent.instance.command.service.CmdRandomImpl
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Internal
 final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCommandMsg> {
@@ -54,15 +51,5 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     return new CmdServiceImpl(network, random);
   }
 
-  private Object createParam(Class<?> paramType, Map<String, Object> paramValue) {
-    if (paramType == Void.class || paramType == Object.class) {
-      return null;
-    }
-    return _lujbean.create(paramType, paramValue);
-  }
-
   private static final Logger LOG = LoggerFactory.getLogger(OnExecuteCommand.class);
-
-  @Autowired
-  private BeanContext _lujbean;
 }

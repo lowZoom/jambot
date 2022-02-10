@@ -1,10 +1,10 @@
 package luj.game.robot.internal.instance.action.step.steps;
 
-import java.util.Map;
+import com.typesafe.config.Config;
 
 public class StepCommand {
 
-  public StepCommand(Class<?> commandType, Map<String, Object> param) {
+  public StepCommand(Class<?> commandType, Config param) {
     _commandType = commandType;
     _param = param;
   }
@@ -13,7 +13,7 @@ public class StepCommand {
     return _commandType;
   }
 
-  public Map<String, Object> getParam() {
+  public Config getParam() {
     return _param;
   }
 
@@ -24,5 +24,5 @@ public class StepCommand {
 
   private final Class<?> _commandType;
 
-  private final Map<String, Object> _param;
+  private final Config _param;
 }

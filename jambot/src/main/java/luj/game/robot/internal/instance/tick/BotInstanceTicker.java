@@ -2,8 +2,10 @@ package luj.game.robot.internal.instance.tick;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.typesafe.config.Config;
 import java.util.List;
 import java.util.OptionalInt;
+import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.Tellable;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.BotExecuteCommandMsg;
@@ -16,6 +18,7 @@ import luj.game.robot.internal.instance.action.step.steps.StepCommand;
 import luj.game.robot.internal.instance.config.StatusConf;
 import luj.game.robot.internal.instance.tick.step.NextStepGetter;
 import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
+import luj.game.robot.internal.instance.tick.step.param.StepParamResolver;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
 import luj.game.robot.internal.instance.tick.wait.WaitingProtoChecker;
 import luj.game.robot.internal.start.botinstance.BotCurrentStep;
@@ -48,7 +51,8 @@ public class BotInstanceTicker {
     NextStepGetter nextStepGetter = new NextStepGetterFactory(_botState, actionList).create();
     NextStepGetter.Result next = nextStepGetter.getNext();
 
-    BotAction nextActionConf = actionList.get(next.actionIndex()).conf();
+    StatusConf.Action nextAction = actionList.get(next.actionIndex());
+    BotAction nextActionConf = nextAction.conf();
     ActionStep nextStepConf = nextActionConf.getStepList().get(next.stepIndex());
 
     _botState.setActionIndex(next.actionIndex());
@@ -60,12 +64,12 @@ public class BotInstanceTicker {
 
     switch (type) {
       case COMMAND: {
-        typeCommand((StepCommand) nextStepConf.getArg());
+        typeCommand((StepCommand) nextStepConf.getArg(), (Config) nextAction.args());
         return;
       }
       case WAIT: {
         handleWait();
-        return;
+//        return;
       }
     }
   }
@@ -96,14 +100,16 @@ public class BotInstanceTicker {
     return true;
   }
 
-  private void typeCommand(StepCommand arg) {
-    Class<?> cmdType = arg.getCommandType();
+  private void typeCommand(StepCommand step, Config actionParam) {
+    Class<?> cmdType = step.getCommandType();
     CommandMap.Command cmd = _instanceDep.getCommandMap().get(cmdType);
     checkNotNull(cmd, cmdType.getName());
 
     Class<?> paramType = cmd.getParamType();
+    BeanContext lujbean = _instanceDep.getLujbean();
+
     Object param = (paramType == Void.class) ? null :
-        _instanceDep.getLujbean().create(paramType, arg.getParam());
+        new StepParamResolver(step.getParam(), actionParam, paramType, lujbean).resolve();
 
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }
