@@ -6,8 +6,10 @@ public interface RobotCreateListener {
 
     void putData(Object data);
 
+    @Deprecated
     void connect(String host, int port);
 
+    @Deprecated
     void send(Object proto);
   }
 

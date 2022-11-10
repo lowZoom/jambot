@@ -1,4 +1,4 @@
-package luj.game.robot.internal.context;
+package luj.game.robot.internal.sessionv2;
 
 import luj.game.robot.api.RobotContext;
 import org.springframework.context.ApplicationContext;

@@ -1,12 +1,13 @@
 package luj.game.robot.internal.session.inject;
 
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import luj.ava.spring.Internal;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.api.plugin.JambotBootInit;
+import luj.game.robot.api.plugin.JambotDynamicInit;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
@@ -18,7 +19,7 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Override
   public List<RobotStartListener> getStartListeners() {
-    return nonNull(_startListeners);
+    return _startListeners;
   }
 
   @Override
@@ -33,7 +34,7 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Override
   public List<RobotProtoHandler<?>> getProtoHandlerList() {
-    return nonNull(_protoHandlerList);
+    return _protoHandlerList;
   }
 
   @Override
@@ -42,29 +43,41 @@ final class InjectRoot implements RobotBeanCollector.Result {
   }
 
   @Override
-  public List<RobotCommand> getCommandList() {
-    return nonNull(_commandList);
+  public List<RobotCommand<?>> getCommandList() {
+    return _commandList;
   }
 
-  private <T> List<T> nonNull(List<T> list) {
-    return MoreObjects.firstNonNull(list, ImmutableList.of());
+  @Override
+  public JambotBootInit getBootInitPlugin() {
+    return _bootInitPlugin;
+  }
+
+  @Override
+  public JambotDynamicInit getDynamicInitPlugin() {
+    return _dynamicInitPlugin;
   }
 
   @Autowired(required = false)
-  private List<RobotStartListener> _startListeners;
+  List<RobotStartListener> _startListeners = ImmutableList.of();
 
   @Autowired
-  private RobotProtoEncoder _protoEncoder;
+  RobotProtoEncoder _protoEncoder;
 
   @Autowired
-  private RobotProtoDecoder _protoDecoder;
+  RobotProtoDecoder _protoDecoder;
 
   @Autowired(required = false)
-  private List<RobotProtoHandler<?>> _protoHandlerList;
+  List<RobotProtoHandler<?>> _protoHandlerList = ImmutableList.of();
 
   @Autowired
-  private RobotInstanceInjectRoot _instanceInjectRoot;
+  RobotInstanceInjectRoot _instanceInjectRoot;
 
   @Autowired(required = false)
-  private List<RobotCommand> _commandList;
+  List<RobotCommand<?>> _commandList = ImmutableList.of();
+
+  @Autowired
+  JambotBootInit _bootInitPlugin;
+
+  @Autowired(required = false)
+  JambotDynamicInit _dynamicInitPlugin;
 }

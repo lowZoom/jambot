@@ -1,6 +1,6 @@
 package luj.game.robot.api;
 
-import luj.game.robot.internal.context.RobotContextFactory;
+import luj.game.robot.internal.sessionv2.RobotContextFactory;
 import org.springframework.context.ApplicationContext;
 
 public enum Jambot {

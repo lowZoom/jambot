@@ -23,8 +23,6 @@ final class OnLujclusterStart implements NodeStartListener {
   @Override
   public void onStart(Context ctx) {
     BotbeanInLujcluster botbean = ctx.getStartParam();
-    RobotBeanCollector.Result rootBean = botbean.getInjectRoot();
-
     BotAdminActor adminActor = new BotAdminActor();
     Actor adminRef = ctx.createApplicationActor(adminActor);
 
@@ -34,7 +32,7 @@ final class OnLujclusterStart implements NodeStartListener {
     parentActor.setInstanceDependency(collectInstanceDependency(botbean));
 
     Actor parentRef = ctx.createApplicationActor(parentActor);
-    new BotStartListenTrigger(parentRef, rootBean.getStartListeners()).trigger();
+    new BotStartListenTrigger(parentRef, botbean.getStartListeners()).trigger();
   }
 
   private RobotInstanceDependency collectInstanceDependency(BotbeanInLujcluster botbean) {

@@ -41,11 +41,13 @@ public interface RobotCommand<P> {
 
   interface Service {
 
+    @Deprecated
     Network network();
 
     Random random();
   }
 
+  @Deprecated
   interface Network {
 
     void connect(String host, int port);
@@ -55,6 +57,7 @@ public interface RobotCommand<P> {
     Http http();
   }
 
+  @Deprecated
   interface Http {
 
     void request(String url, Class<? extends RobotCommand<?>> handler);

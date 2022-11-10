@@ -3,6 +3,8 @@ package luj.game.robot.internal.session.inject;
 import java.util.List;
 import luj.game.robot.api.action.RobotCommand;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.api.plugin.JambotBootInit;
+import luj.game.robot.api.plugin.JambotDynamicInit;
 import luj.game.robot.api.proto.RobotProtoDecoder;
 import luj.game.robot.api.proto.RobotProtoEncoder;
 import luj.game.robot.api.proto.RobotProtoHandler;
@@ -26,7 +28,11 @@ public class RobotBeanCollector {
 
     RobotInstanceInjectRoot getInstanceInjectRoot();
 
-    List<RobotCommand> getCommandList();
+    List<RobotCommand<?>> getCommandList();
+
+    JambotBootInit getBootInitPlugin();
+
+    JambotDynamicInit getDynamicInitPlugin();
   }
 
   public RobotBeanCollector(ApplicationContext appContext) {
@@ -34,13 +40,13 @@ public class RobotBeanCollector {
   }
 
   public Result collect() {
-    try (AnnotationConfigApplicationContext resultCtx = new AnnotationConfigApplicationContext()) {
-      resultCtx.setParent(_appContext);
+    try (AnnotationConfigApplicationContext internalCtx = new AnnotationConfigApplicationContext()) {
+      internalCtx.setParent(_appContext);
 
-      resultCtx.register(InjectConf.class);
-      resultCtx.refresh();
+      internalCtx.register(InjectConf.class);
+      internalCtx.refresh();
 
-      return resultCtx.getBean(InjectRoot.class);
+      return internalCtx.getBean(InjectRoot.class);
     }
   }
 

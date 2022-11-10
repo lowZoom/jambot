@@ -10,6 +10,7 @@ public interface RobotProtoHandler<P> {
 
     ///////////////////////
 
+    @Deprecated
     void connect(String host, int port);
 
     void disconnect();

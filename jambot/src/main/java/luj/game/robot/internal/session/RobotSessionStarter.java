@@ -15,6 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * @see RobotSessionStarterV2
+ */
+@Deprecated
 public class RobotSessionStarter {
 
   public RobotSessionStarter(String host, int port, ApplicationContext appContext) {
@@ -42,7 +46,9 @@ public class RobotSessionStarter {
       RobotBeanCollector.Result injectRoot) {
     NetContext lujnet = LujNet.create(botCtx);
     BeanContext lujbean = LujBean.start();
-    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, lujnet, lujbean);
+
+    BotbeanInLujcluster botbean = new BotbeanInLujcluster(
+        injectRoot, injectRoot.getStartListeners(), lujnet, lujbean);
 
     List<String> seeds = ImmutableList.of(_host + ":" + _port);
     return LujCluster.start(botCtx).startNode(_host, _port, seeds, botbean);
