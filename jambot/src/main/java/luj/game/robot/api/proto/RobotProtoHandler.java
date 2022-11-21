@@ -10,15 +10,6 @@ public interface RobotProtoHandler<P> {
 
     ///////////////////////
 
-    @Deprecated
-    void connect(String host, int port);
-
-    void disconnect();
-
-    void send(Object proto);
-
-    ///////////////////////
-
     void putData(Object data);
 
     <D> D getData(Class<D> dataType);

@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 public enum Jambot {
   ;
 
-  public static RobotContext start(ApplicationContext appContext) {
-    return new RobotContextFactory(appContext).create();
+  public static void start(ApplicationContext appContext) {
+    new RobotContextFactory(appContext).create().start(null);
   }
 }

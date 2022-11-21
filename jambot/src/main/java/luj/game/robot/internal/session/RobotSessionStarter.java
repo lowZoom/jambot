@@ -9,8 +9,6 @@ import luj.cluster.api.node.ClusterNode;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.internal.session.inject.RobotBeanCollector;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
-import luj.net.api.LujNet;
-import luj.net.api.NetContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -44,11 +42,10 @@ public class RobotSessionStarter {
    */
   private ClusterNode startLujcluster(ApplicationContext botCtx,
       RobotBeanCollector.Result injectRoot) {
-    NetContext lujnet = LujNet.create(botCtx);
     BeanContext lujbean = LujBean.start();
 
     BotbeanInLujcluster botbean = new BotbeanInLujcluster(
-        injectRoot, injectRoot.getStartListeners(), lujnet, lujbean);
+        injectRoot, injectRoot.getStartListeners(), lujbean);
 
     List<String> seeds = ImmutableList.of(_host + ":" + _port);
     return LujCluster.start(botCtx).startNode(_host, _port, seeds, botbean);

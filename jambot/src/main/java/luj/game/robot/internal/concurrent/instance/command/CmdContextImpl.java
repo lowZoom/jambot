@@ -7,11 +7,6 @@ import org.slf4j.Logger;
 
 final class CmdContextImpl implements RobotCommand.Context {
 
-  @Override
-  public void send(Object proto) {
-    _service.network().send(proto);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getParam(RobotCommand<T> command) {

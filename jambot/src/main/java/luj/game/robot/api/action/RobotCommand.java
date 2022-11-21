@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Collection;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -30,43 +29,12 @@ public interface RobotCommand<P> {
 
     void executeCommand(Class<? extends RobotCommand> cmdType);
 
-    /**
-     * @see Network#send
-     */
-    @Deprecated
-    void send(Object proto);
-
     Service service();
   }
 
   interface Service {
 
-    @Deprecated
-    Network network();
-
     Random random();
-  }
-
-  @Deprecated
-  interface Network {
-
-    void connect(String host, int port);
-
-    void send(Object proto);
-
-    Http http();
-  }
-
-  @Deprecated
-  interface Http {
-
-    void request(String url, Class<? extends RobotCommand<?>> handler);
-
-    @Deprecated
-    String request(String url);
-
-    @Deprecated
-    Map<String, Object> requestJsonMap(String url);
   }
 
   interface Random {

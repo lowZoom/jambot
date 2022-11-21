@@ -24,7 +24,7 @@ public class BotProtoReceiver {
     RobotInstanceDependency instanceDep = _instanceState.getDependency();
     RobotProtoDecoder protoDecoder = instanceDep.getInjectRoot().getProtoDecoder();
 
-    DecodeContextImpl decodeCtx = new DecodeContextImpl(_protoData);
+    var decodeCtx = new DecodeContextImpl(_protoData);
     Object proto = protoDecoder.decode(decodeCtx);
     Class<?> protoType = proto.getClass();
 
@@ -49,8 +49,15 @@ public class BotProtoReceiver {
       return;
     }
 
-    handler.onHandle(new HandlerContextImpl(proto, _instanceState.getRobotState(),
-        dep.getLujnet(), dep.getInjectRoot().getProtoEncoder(), _instanceRef, dep.getLujbean()));
+    var handleCtx = new HandlerContextImpl();
+    handleCtx._proto = proto;
+    handleCtx._robotState = _instanceState.getRobotState();
+
+    handleCtx._protoEncoder = dep.getInjectRoot().getProtoEncoder();
+    handleCtx._instanceRef = _instanceRef;
+    handleCtx._lujbean = dep.getLujbean();
+
+    handler.onHandle(handleCtx);
   }
 
   private final byte[] _protoData;

@@ -11,8 +11,6 @@ import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
 import luj.game.robot.internal.session.inject.RobotBeanCollector;
 import luj.game.robot.internal.sessionv2.plugin.start.BootInitInvoker;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
-import luj.net.api.LujNet;
-import luj.net.api.NetContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -54,9 +52,8 @@ public class RobotSessionStarterV2 {
    */
   private ClusterNode startLujcluster(ApplicationContext botCtx,
       RobotBeanCollector.Result injectRoot, List<RobotStartListener> startList) {
-    NetContext lujnet = LujNet.create(botCtx);
     BeanContext lujbean = LujBean.start();
-    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, startList, lujnet, lujbean);
+    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, startList, lujbean);
 
 //    List<String> seeds = ImmutableList.of(_host + ":" + _port);
     return LujCluster.start(botCtx).startNode(c -> c

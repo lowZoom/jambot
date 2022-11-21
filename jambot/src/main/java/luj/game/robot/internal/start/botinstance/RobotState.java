@@ -3,17 +3,10 @@ package luj.game.robot.internal.start.botinstance;
 import java.util.Map;
 import java.util.Queue;
 import luj.game.robot.internal.instance.config.StatusConf;
-import luj.net.api.client.NetConnection;
 
+
+//TODO: 换用record
 public class RobotState {
-
-  public NetConnection getConnection() {
-    return _connection;
-  }
-
-  public void setConnection(NetConnection connection) {
-    _connection = connection;
-  }
 
   public Map<Class<?>, Object> getDataMap() {
     return _dataMap;
@@ -71,7 +64,6 @@ public class RobotState {
     _receiveHistory = receiveHistory;
   }
 
-  private NetConnection _connection;
   private Map<Class<?>, Object> _dataMap;
 
   private String _status;

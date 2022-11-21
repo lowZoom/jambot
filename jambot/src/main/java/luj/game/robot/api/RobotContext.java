@@ -3,6 +3,7 @@ package luj.game.robot.api;
 import akka.actor.ActorRef;
 import java.util.function.Function;
 
+@Deprecated
 public interface RobotContext {
 
   interface Start {

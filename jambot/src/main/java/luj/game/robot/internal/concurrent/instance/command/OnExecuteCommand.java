@@ -4,7 +4,6 @@ import luj.ava.spring.Internal;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
-import luj.game.robot.internal.concurrent.instance.command.service.CmdNetworkImpl;
 import luj.game.robot.internal.concurrent.instance.command.service.CmdRandomImpl;
 import luj.game.robot.internal.start.botinstance.RobotState;
 import org.slf4j.Logger;
@@ -46,9 +45,9 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
 
   private CmdServiceImpl makeService(Ref instanceRef, RobotState botState,
       RobotInstanceDependency dep) {
-    CmdNetworkImpl network = new CmdNetworkImpl(instanceRef, botState, dep);
-    CmdRandomImpl random = new CmdRandomImpl();
-    return new CmdServiceImpl(network, random);
+    CmdServiceImpl service = new CmdServiceImpl();
+    service._random = new CmdRandomImpl();
+    return service;
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(OnExecuteCommand.class);

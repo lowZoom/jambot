@@ -17,7 +17,7 @@ final class UpdateAdminHandler implements RobotInstanceActor.Handler<UpdateAdmin
 
     self.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
         .set(m::index, self.getIndex())
-        .set(m::isConnected, instance.getConnection() != null)
+        .set(m::isConnected, false)// instance.getConnection() != null)
         .set(m::status, instance.getStatus())
     ).getInstance());
   }

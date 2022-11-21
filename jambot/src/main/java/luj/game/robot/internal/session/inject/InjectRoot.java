@@ -24,12 +24,12 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Override
   public RobotProtoEncoder getProtoEncoder() {
-    return _protoEncoder;
+    return _instanceInjectRoot.getProtoEncoder();
   }
 
   @Override
   public RobotProtoDecoder getProtoDecoder() {
-    return _protoDecoder;
+    return _instanceInjectRoot.getProtoDecoder();
   }
 
   @Override
@@ -59,12 +59,6 @@ final class InjectRoot implements RobotBeanCollector.Result {
 
   @Autowired(required = false)
   List<RobotStartListener> _startListeners = ImmutableList.of();
-
-  @Autowired
-  RobotProtoEncoder _protoEncoder;
-
-  @Autowired
-  RobotProtoDecoder _protoDecoder;
 
   @Autowired(required = false)
   List<RobotProtoHandler<?>> _protoHandlerList = ImmutableList.of();
