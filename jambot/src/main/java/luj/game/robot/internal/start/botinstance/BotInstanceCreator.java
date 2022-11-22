@@ -25,7 +25,7 @@ public class BotInstanceCreator {
   }
 
   private int secToMs(double sec) {
-    return (int) Math.round(sec * 1000);
+    return Math.toIntExact(Math.round(sec * 1000));
   }
 
   private final String _initStatus;

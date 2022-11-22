@@ -8,6 +8,8 @@ public interface RobotStartListener {
   interface Context {
 
     void createRobot(List<BotConf> conf);
+
+    void createRobot(String group, int amount);
   }
 
   void onStart(Context ctx);

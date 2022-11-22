@@ -14,7 +14,8 @@ public class BotStartListenTrigger {
   }
 
   public void trigger() {
-    StartContextImpl ctx = new StartContextImpl(_parentRef);
+    StartContextImpl ctx = new StartContextImpl();
+    ctx._parentRef = _parentRef;
 
     for (RobotStartListener listener : _listenerList) {
       listener.onStart(ctx);

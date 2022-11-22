@@ -8,10 +8,6 @@ import luj.game.robot.internal.start.botgroup.BotGroupCreator;
 
 final class StartContextImpl implements RobotStartListener.Context {
 
-  StartContextImpl(Tellable parentRef) {
-    _parentRef = parentRef;
-  }
-
   @Override
   public void createRobot(List<BotConf> conf) {
     for (BotConf c : conf) {
@@ -19,5 +15,10 @@ final class StartContextImpl implements RobotStartListener.Context {
     }
   }
 
-  private final Tellable _parentRef;
+//  @Override
+//  public void createRobot(String group, int amount) {
+//    System.out.println("TODO: 创建机器人");
+//  }
+
+  Tellable _parentRef;
 }
