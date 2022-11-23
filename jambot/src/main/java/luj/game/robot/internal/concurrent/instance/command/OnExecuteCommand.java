@@ -37,6 +37,7 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     execCtx._instanceRef = selfRef;
     execCtx._service = makeService(selfRef, botState, dep);
 
+    execCtx._cmdType = cmdType;
     execCtx._param = msg.param();
     execCtx._logger = cmd.getLogger();
 

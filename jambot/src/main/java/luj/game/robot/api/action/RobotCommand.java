@@ -27,7 +27,7 @@ public interface RobotCommand<P> {
 
     Logger getLogger();
 
-    void executeCommand(Class<? extends RobotCommand> cmdType);
+    void executeCommand(Class<? extends RobotCommand<?>> cmdType);
 
     Service service();
   }

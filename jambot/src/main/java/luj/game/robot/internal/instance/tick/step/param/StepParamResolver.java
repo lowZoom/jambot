@@ -7,6 +7,10 @@ import java.util.Map;
 import luj.bean.api.BeanContext;
 import luj.bean.api.bean.ImmutableBean;
 
+/**
+ * @see StepParamResolverV2
+ */
+@Deprecated
 public class StepParamResolver {
 
   public StepParamResolver(Config stepRaw, Config actionParam, Class<?> paramType,

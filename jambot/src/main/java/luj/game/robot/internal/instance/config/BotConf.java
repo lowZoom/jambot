@@ -5,13 +5,13 @@ import java.util.Map;
 public class BotConf {
 
   public BotConf(String name, int amount, double tickSecMin, double tickSecMax,
-      String initStatus, Map<String, StatusConf> statusMap) {
+      Map<String, StatusConf> statusMap, String initStatus) {
     _name = name;
     _amount = amount;
     _tickSecMin = tickSecMin;
     _tickSecMax = tickSecMax;
-    _initStatus = initStatus;
     _statusMap = statusMap;
+    _initStatus = initStatus;
   }
 
   public String getName() {
@@ -22,10 +22,12 @@ public class BotConf {
     return _amount;
   }
 
+  @Deprecated
   public double getTickSecMin() {
     return _tickSecMin;
   }
 
+  @Deprecated
   public double getTickSecMax() {
     return _tickSecMax;
   }
@@ -44,6 +46,6 @@ public class BotConf {
   private final double _tickSecMin;
   private final double _tickSecMax;
 
-  private final String _initStatus;
   private final Map<String, StatusConf> _statusMap;
+  private final String _initStatus;
 }

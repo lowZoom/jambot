@@ -30,8 +30,8 @@ final class CmdContextImpl implements RobotCommand.Context {
   }
 
   @Override
-  public void executeCommand(Class<? extends RobotCommand> cmdType) {
-    new CommandExecuteStarter(_instanceRef, cmdType).start();
+  public void executeCommand(Class<? extends RobotCommand<?>> cmdType) {
+    new CommandExecuteStarterV2(_instanceRef, cmdType, _cmdType, _param).start();
   }
 
   @Override
@@ -45,6 +45,8 @@ final class CmdContextImpl implements RobotCommand.Context {
   ActorMessageHandler.Ref _instanceRef;
   RobotCommand.Service _service;
 
+  String _cmdType;
   Object _param;
+
   Logger _logger;
 }
