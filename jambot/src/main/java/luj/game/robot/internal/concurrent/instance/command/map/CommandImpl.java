@@ -25,6 +25,10 @@ final class CommandImpl implements CommandMap.Command {
     return _logger;
   }
 
+  String getCommandName() {
+    return _commandType.getName();
+  }
+
   RobotCommand<?> _command;
 
   Class<?> _commandType;

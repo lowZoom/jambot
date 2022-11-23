@@ -6,21 +6,24 @@ import java.util.Map;
 import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
 import luj.game.robot.api.action.RobotCommand;
-import luj.game.robot.internal.session.inject.RobotBeanCollector;
+import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import org.slf4j.LoggerFactory;
 
 public class CommandMapFactory {
 
-  public CommandMapFactory(RobotBeanCollector.Result rootBean) {
+  public CommandMapFactory(AllBeanCombiner.Result rootBean) {
     _rootBean = rootBean;
   }
 
   public CommandMap create() {
-    Map<Class<?>, CommandMap.Command> cmdMap = _rootBean.getCommandList().stream()
+    Map<String, CommandMap.Command> cmdMap = _rootBean.command().stream()
         .map(this::createCommand)
-        .collect(toMap(CommandImpl::getCommandType, Function.identity()));
+        .collect(toMap(CommandImpl::getCommandName, Function.identity()));
 
-    return new CommandMapImpl(cmdMap);
+    var result = new CommandMapImpl();
+    result._cmdMap = cmdMap;
+
+    return result;
   }
 
   private CommandImpl createCommand(RobotCommand<?> cmdInstance) {
@@ -39,5 +42,5 @@ public class CommandMapFactory {
     return cmd;
   }
 
-  private final RobotBeanCollector.Result _rootBean;
+  private final AllBeanCombiner.Result _rootBean;
 }

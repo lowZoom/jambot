@@ -15,7 +15,7 @@ import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoo
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Internal
-final class InjectRoot implements RobotBeanCollector.Result {
+final class InjectRoot implements StaticBeanCollector.Result {
 
   @Override
   public List<RobotStartListener> getStartListeners() {

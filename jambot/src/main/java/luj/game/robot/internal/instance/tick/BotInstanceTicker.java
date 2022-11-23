@@ -101,15 +101,15 @@ public class BotInstanceTicker {
   }
 
   private void typeCommand(StepCommand step, Config actionParam) {
-    Class<?> cmdType = step.getCommandType();
+    String cmdType = step.commandType();
     CommandMap.Command cmd = _instanceDep.getCommandMap().get(cmdType);
-    checkNotNull(cmd, cmdType.getName());
+    checkNotNull(cmd, cmdType);
 
     Class<?> paramType = cmd.getParamType();
     BeanContext lujbean = _instanceDep.getLujbean();
 
     Object param = (paramType == Void.class) ? null :
-        new StepParamResolver(step.getParam(), actionParam, paramType, lujbean).resolve();
+        new StepParamResolver(step.param(), actionParam, paramType, lujbean).resolve();
 
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }

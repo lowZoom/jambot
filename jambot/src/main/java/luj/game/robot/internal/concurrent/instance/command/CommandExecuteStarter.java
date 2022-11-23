@@ -4,10 +4,8 @@ import java.time.Duration;
 import java.util.Random;
 import luj.cluster.api.actor.ActorMessageHandler;
 
-/**
- * FIXME: 不应该在内部写死间隔
- */
-@Deprecated
+
+@Deprecated //FIXME: 不应该在内部写死间隔
 public class CommandExecuteStarter {
 
   public CommandExecuteStarter(ActorMessageHandler.Ref instanceRef, Class<?> commandType) {
@@ -16,7 +14,7 @@ public class CommandExecuteStarter {
   }
 
   public void start() {
-    BotExecuteCommandMsg msg = new BotExecuteCommandMsg(_commandType, null);
+    BotExecuteCommandMsg msg = new BotExecuteCommandMsg(_commandType.getName(), null);
     int delay = 250 + RAND.nextInt(5000);
 
     _instanceRef.tell(msg, Duration.ofMillis(delay));

@@ -16,6 +16,9 @@ public class BotInstanceCreator {
     _parentRef = parentRef;
   }
 
+  /**
+   * @see luj.game.robot.internal.concurrent.parent.spawn.OnRobotSpawn#onHandle
+   */
   public void create() {
     int tickMin = secToMs(_tickSecMin);
     int tickMax = secToMs(_tickSecMax);

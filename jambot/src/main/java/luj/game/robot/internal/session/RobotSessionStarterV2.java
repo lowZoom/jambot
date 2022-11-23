@@ -1,14 +1,12 @@
 package luj.game.robot.internal.session;
 
-import com.google.common.collect.ImmutableList;
-import java.util.List;
 import luj.bean.api.BeanContext;
 import luj.bean.api.LujBean;
 import luj.cluster.api.LujCluster;
-import luj.cluster.api.node.ClusterNode;
 import luj.game.robot.api.boot.RobotStartListener;
+import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
-import luj.game.robot.internal.session.inject.RobotBeanCollector;
+import luj.game.robot.internal.session.inject.StaticBeanCollector;
 import luj.game.robot.internal.sessionv2.plugin.start.BootInitInvoker;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
 import org.slf4j.Logger;
@@ -23,18 +21,14 @@ public class RobotSessionStarterV2 {
   }
 
   public void start() {
-    RobotBeanCollector.Result staticRoot = new RobotBeanCollector(_appContext).collect();
+    StaticBeanCollector.Result staticRoot = new StaticBeanCollector(_appContext).collect();
     BootInitInvoker.Result bootCfg = new BootInitInvoker(staticRoot.getBootInitPlugin()).invoke();
 
     DynamicInitInvoker.Result dynamicRoot = new DynamicInitInvoker(
         staticRoot.getDynamicInitPlugin(), bootCfg.startParam()).invoke();
 
-    List<RobotStartListener> listenerList = ImmutableList.<RobotStartListener>builder()
-        .addAll(staticRoot.getStartListeners())
-        .addAll(dynamicRoot.getStartListeners())
-        .build();
-
-    if (listenerList.isEmpty()) {
+    AllBeanCombiner.Result allRoot = new AllBeanCombiner(staticRoot, dynamicRoot).combine();
+    if (allRoot.startListener().isEmpty()) {
       LOG.warn("没有启动逻辑，机器人结束：{}", RobotStartListener.class.getName());
       return;
     }
@@ -43,20 +37,19 @@ public class RobotSessionStarterV2 {
       internalCtx.register(InjectConf.class);
       internalCtx.refresh();
 
-      startLujcluster(internalCtx, staticRoot, listenerList);
+      startLujcluster(internalCtx, allRoot);
     }
   }
 
   /**
    * @see luj.game.robot.internal.start.OnLujclusterStart
    */
-  private ClusterNode startLujcluster(ApplicationContext botCtx,
-      RobotBeanCollector.Result injectRoot, List<RobotStartListener> startList) {
+  private void startLujcluster(ApplicationContext botCtx, AllBeanCombiner.Result injectRoot) {
     BeanContext lujbean = LujBean.start();
-    BotbeanInLujcluster botbean = new BotbeanInLujcluster(injectRoot, startList, lujbean);
+    var botbean = new BotbeanInLujcluster(injectRoot, lujbean);
 
 //    List<String> seeds = ImmutableList.of(_host + ":" + _port);
-    return LujCluster.start(botCtx).startNode(c -> c
+    LujCluster.start(botCtx).startNode(c -> c
         .startParam(botbean)
     );
   }

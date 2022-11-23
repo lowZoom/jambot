@@ -7,7 +7,7 @@ import luj.bean.api.LujBean;
 import luj.cluster.api.LujCluster;
 import luj.cluster.api.node.ClusterNode;
 import luj.game.robot.api.boot.RobotStartListener;
-import luj.game.robot.internal.session.inject.RobotBeanCollector;
+import luj.game.robot.internal.session.inject.StaticBeanCollector;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class RobotSessionStarter {
   }
 
   public ClusterNode start() {
-    RobotBeanCollector.Result root = new RobotBeanCollector(_appContext).collect();
+    StaticBeanCollector.Result root = new StaticBeanCollector(_appContext).collect();
 
     List<RobotStartListener> listenerList = root.getStartListeners();
     if (listenerList.isEmpty()) {
@@ -37,16 +37,11 @@ public class RobotSessionStarter {
     return startLujcluster(_appContext, root);
   }
 
-  /**
-   * @see luj.game.robot.internal.start.OnLujclusterStart
-   */
   private ClusterNode startLujcluster(ApplicationContext botCtx,
-      RobotBeanCollector.Result injectRoot) {
+      StaticBeanCollector.Result injectRoot) {
     BeanContext lujbean = LujBean.start();
 
-    BotbeanInLujcluster botbean = new BotbeanInLujcluster(
-        injectRoot, injectRoot.getStartListeners(), lujbean);
-
+    BotbeanInLujcluster botbean = new BotbeanInLujcluster(null, lujbean);
     List<String> seeds = ImmutableList.of(_host + ":" + _port);
     return LujCluster.start(botCtx).startNode(_host, _port, seeds, botbean);
   }

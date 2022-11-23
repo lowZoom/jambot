@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Internal
 final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
 
+  /**
+   * @see luj.game.robot.internal.concurrent.instance.start.OnInstancePrestart#onHandle
+   */
   @Override
   public void onHandle(Context ctx) {
     RobotParentActor self = ctx.getActorState(this);

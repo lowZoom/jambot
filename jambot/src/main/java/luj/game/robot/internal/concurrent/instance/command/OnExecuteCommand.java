@@ -20,10 +20,10 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     RobotInstanceDependency dep = self.getDependency();
     CommandMap cmdMap = dep.getCommandMap();
 
-    Class<?> cmdType = msg.getCommandType();
+    String cmdType = msg.commandType();
     CommandMap.Command cmd = cmdMap.get(cmdType);
     if (cmd == null) {
-      LOG.warn("指令未被启用：{}", cmdType.getName());
+      LOG.warn("指令未被启用：{}", cmdType);
       return;
     }
 
@@ -37,7 +37,7 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     execCtx._instanceRef = selfRef;
     execCtx._service = makeService(selfRef, botState, dep);
 
-    execCtx._param = msg.getParam();
+    execCtx._param = msg.param();
     execCtx._logger = cmd.getLogger();
 
     cmd.getInstance().onExecute(execCtx);

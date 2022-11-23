@@ -14,7 +14,7 @@ import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMapFactory;
 import luj.game.robot.internal.concurrent.parent.RobotParentActor;
-import luj.game.robot.internal.session.inject.RobotBeanCollector;
+import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import luj.game.robot.internal.start.listener.BotStartListenTrigger;
 
 @Internal
@@ -32,17 +32,17 @@ final class OnLujclusterStart implements NodeStartListener {
     parentActor.setInstanceDependency(collectInstanceDependency(botbean));
 
     Actor parentRef = ctx.createApplicationActor(parentActor);
-    new BotStartListenTrigger(parentRef, botbean.getStartListeners()).trigger();
+    new BotStartListenTrigger(parentRef, botbean.getInjectRoot().startListener()).trigger();
   }
 
   private RobotInstanceDependency collectInstanceDependency(BotbeanInLujcluster botbean) {
-    RobotBeanCollector.Result rootBean = botbean.getInjectRoot();
+    AllBeanCombiner.Result rootBean = botbean.getInjectRoot();
     CommandMap cmdMap = new CommandMapFactory(rootBean).create();
 
-    Map<Class<?>, RobotProtoHandler<?>> handleMap = rootBean.getProtoHandlerList().stream()
+    Map<Class<?>, RobotProtoHandler<?>> handleMap = rootBean.protoHandler().stream()
         .collect(toMap(this::getProtoType, Function.identity()));
 
-    return new RobotInstanceDependency(rootBean.getInstanceInjectRoot(),
+    return new RobotInstanceDependency(rootBean.instanceRoot(),
         botbean.getLujbean(), handleMap, cmdMap);
   }
 

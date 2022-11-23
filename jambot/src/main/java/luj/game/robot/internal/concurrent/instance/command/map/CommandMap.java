@@ -16,5 +16,5 @@ public interface CommandMap {
     Logger getLogger();
   }
 
-  Command get(Class<?> commandType);
+  Command get(String commandType);
 }

@@ -15,10 +15,5 @@ final class StartContextImpl implements RobotStartListener.Context {
     }
   }
 
-//  @Override
-//  public void createRobot(String group, int amount) {
-//    System.out.println("TODO: 创建机器人");
-//  }
-
   Tellable _parentRef;
 }

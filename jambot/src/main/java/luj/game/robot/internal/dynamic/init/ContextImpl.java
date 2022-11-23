@@ -27,7 +27,7 @@ final class ContextImpl implements JambotDynamicInit.Context {
         .collect(Collectors.toList());
   }
 
-  Object _startParam;
-
   List<Object> _registerAll = new ArrayList<>();
+
+  Object _startParam;
 }

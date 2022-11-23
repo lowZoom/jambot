@@ -12,7 +12,7 @@ import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoo
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class RobotBeanCollector {
+public class StaticBeanCollector {
 
   public interface Result {
 
@@ -35,7 +35,7 @@ public class RobotBeanCollector {
     JambotDynamicInit getDynamicInitPlugin();
   }
 
-  public RobotBeanCollector(ApplicationContext appContext) {
+  public StaticBeanCollector(ApplicationContext appContext) {
     _appContext = appContext;
   }
 
