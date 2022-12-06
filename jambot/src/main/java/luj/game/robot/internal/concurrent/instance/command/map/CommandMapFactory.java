@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toMap;
 import java.util.Map;
 import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
-import luj.game.robot.api.action.RobotCommand;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class CommandMapFactory {
     return result;
   }
 
-  private CommandImpl createCommand(RobotCommand<?> cmdInstance) {
+  private CommandImpl createCommand(RobotDataCommand<?> cmdInstance) {
     CommandImpl cmd = new CommandImpl();
     cmd._command = cmdInstance;
 
@@ -35,7 +35,7 @@ public class CommandMapFactory {
     cmd._logger = LoggerFactory.getLogger(cmdType);
 
     cmd._paramType = TypeX.of(cmdType)
-        .getSupertype(RobotCommand.class)
+        .getSupertype(RobotDataCommand.class)
         .getTypeParam(0)
         .asClass();
 

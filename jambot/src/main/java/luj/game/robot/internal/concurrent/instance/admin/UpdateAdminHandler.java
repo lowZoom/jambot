@@ -1,11 +1,9 @@
 package luj.game.robot.internal.concurrent.instance.admin;
 
-import luj.ava.spring.Internal;
-import luj.bean.api.BeanContext;
 import luj.game.robot.internal.admin.message.internal.instance.UpdateInstanceMsg;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.start.botinstance.RobotState;
-import org.springframework.beans.factory.annotation.Autowired;
+import luj.spring.anno.Internal;
 
 @Internal
 final class UpdateAdminHandler implements RobotInstanceActor.Handler<UpdateAdminMsg> {
@@ -15,13 +13,6 @@ final class UpdateAdminHandler implements RobotInstanceActor.Handler<UpdateAdmin
     RobotInstanceActor self = ctx.getActorState(this);
     RobotState instance = self.getRobotState();
 
-    self.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
-        .set(m::index, self.getIndex())
-        .set(m::isConnected, false)// instance.getConnection() != null)
-        .set(m::status, instance.getStatus())
-    ).getInstance());
+    self.getAdminRef().tell(new UpdateInstanceMsg(-1, false, instance.getStatus()));
   }
-
-  @Autowired
-  private BeanContext _lujbean;
 }

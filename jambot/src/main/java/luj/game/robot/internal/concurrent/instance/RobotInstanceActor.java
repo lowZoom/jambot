@@ -15,10 +15,9 @@ public class RobotInstanceActor {
     // NOOP
   }
 
-  public RobotInstanceActor(RobotState robotState, Integer index, int tickMsMin,
+  public RobotInstanceActor(RobotState robotState, int tickMsMin,
       int tickMsMax, RobotInstanceDependency dependency, Tellable adminRef) {
     _robotState = robotState;
-    _index = index;
     _tickMsMin = tickMsMin;
     _tickMsMax = tickMsMax;
     _dependency = dependency;
@@ -27,10 +26,6 @@ public class RobotInstanceActor {
 
   public RobotState getRobotState() {
     return _robotState;
-  }
-
-  public Integer getIndex() {
-    return _index;
   }
 
   public int getTickMsMin() {
@@ -50,7 +45,6 @@ public class RobotInstanceActor {
   }
 
   private final RobotState _robotState;
-  private final Integer _index;
 
   private final int _tickMsMin;
   private final int _tickMsMax;

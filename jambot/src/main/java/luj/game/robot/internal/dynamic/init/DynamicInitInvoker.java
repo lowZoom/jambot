@@ -1,7 +1,7 @@
 package luj.game.robot.internal.dynamic.init;
 
 import java.util.List;
-import luj.game.robot.api.action.RobotCommand;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.plugin.JambotDynamicInit;
 
@@ -11,7 +11,7 @@ public class DynamicInitInvoker {
 
     List<RobotStartListener> startListeners();
 
-    List<RobotCommand<?>> commandList();
+    List<RobotDataCommand<?>> commandList();
   }
 
   public DynamicInitInvoker(JambotDynamicInit initPlugin, Object startParam) {
@@ -31,7 +31,7 @@ public class DynamicInitInvoker {
   private Result makeResult(ContextImpl ctx) {
     ResultImpl result = new ResultImpl();
     result._start = ctx.findBeans(RobotStartListener.class);
-    result._command = ctx.findBeans(RobotCommand.class);
+    result._command = ctx.findBeans(RobotDataCommand.class);
 
     return result;
   }

@@ -1,7 +1,8 @@
 package luj.game.robot.internal.dynamic.combine;
 
 import java.util.List;
-import luj.game.robot.api.action.RobotCommand;
+import luj.bean.api.BeanContext;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
@@ -14,17 +15,20 @@ public class AllBeanCombiner {
 
     List<RobotStartListener> startListener();
 
-    List<RobotCommand<?>> command();
+    List<RobotDataCommand<?>> command();
 
     List<RobotProtoHandler<?>> protoHandler();
 
     RobotInstanceInjectRoot instanceRoot();
+
+    BeanContext lujbean();
   }
 
   public AllBeanCombiner(StaticBeanCollector.Result staticRoot,
-      DynamicInitInvoker.Result dynamicRoot) {
+      DynamicInitInvoker.Result dynamicRoot, BeanContext lujbean) {
     _staticRoot = staticRoot;
     _dynamicRoot = dynamicRoot;
+    _lujbean = lujbean;
   }
 
   // 如果有要做热更，要考虑泄露问题
@@ -32,11 +36,13 @@ public class AllBeanCombiner {
     var result = new ResultImpl();
     result._staticRoot = _staticRoot;
     result._dynamicRoot = _dynamicRoot;
+    result._lujbean = _lujbean;
 
     return result;
   }
 
   private final StaticBeanCollector.Result _staticRoot;
-
   private final DynamicInitInvoker.Result _dynamicRoot;
+
+  private final BeanContext _lujbean;
 }

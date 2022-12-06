@@ -3,13 +3,10 @@ package luj.game.robot.internal.concurrent.parent.spawn;
 import akka.actor.ActorRef;
 import java.util.HashMap;
 import java.util.LinkedList;
-import luj.ava.spring.Internal;
-import luj.bean.api.BeanContext;
-import luj.game.robot.internal.admin.message.internal.instance.UpdateInstanceMsg;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.parent.RobotParentActor;
 import luj.game.robot.internal.start.botinstance.RobotState;
-import org.springframework.beans.factory.annotation.Autowired;
+import luj.spring.anno.Internal;
 
 @Internal
 final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
@@ -30,7 +27,7 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
   }
 
   private RobotInstanceActor createInstance(RobotParentActor self, RobotSpawnMsg msg) {
-    RobotState robotState = new RobotState();
+    var robotState = new RobotState();
     robotState.setDataMap(new HashMap<>());
     robotState.setReceiveHistory(new LinkedList<>());
 
@@ -40,19 +37,14 @@ final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
 //    robotState.setCurAction(msg.getAction());
     robotState.setStepIndex(-1);
 
-    int robotIndex = self.getNextIndex();
-    self.setNextIndex(robotIndex + 1);
-
-    return new RobotInstanceActor(robotState, robotIndex, msg.getTickMsMin(),
+    return new RobotInstanceActor(robotState, msg.getTickMsMin(),
         msg.getTickMsMax(), self.getInstanceDependency(), self.getAdminRef());
   }
 
+  @Deprecated
   private void updateAdmin(RobotParentActor self, RobotInstanceActor instance) {
-    self.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
-        .set(m::index, instance.getIndex())
-    ).getInstance());
+//    self.getAdminRef().tell(_lujbean.createBean(UpdateInstanceMsg.class, (b, m) -> b
+//        .set(m::index, instance.getIndex())
+//    ).getInstance());
   }
-
-  @Autowired
-  private BeanContext _lujbean;
 }

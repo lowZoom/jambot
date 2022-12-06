@@ -5,7 +5,6 @@ import java.util.Queue;
 import luj.game.robot.internal.instance.config.StatusConf;
 
 
-//TODO: 换用record
 public class RobotState {
 
   public Map<Class<?>, Object> getDataMap() {

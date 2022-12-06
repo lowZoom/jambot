@@ -2,7 +2,8 @@ package luj.game.robot.internal.dynamic.combine;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import luj.game.robot.api.action.RobotCommand;
+import luj.bean.api.BeanContext;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
@@ -20,8 +21,8 @@ final class ResultImpl implements AllBeanCombiner.Result {
   }
 
   @Override
-  public List<RobotCommand<?>> command() {
-    return ImmutableList.<RobotCommand<?>>builder()
+  public List<RobotDataCommand<?>> command() {
+    return ImmutableList.<RobotDataCommand<?>>builder()
         .addAll(_staticRoot.getCommandList())
         .addAll(_dynamicRoot.commandList())
         .build();
@@ -37,7 +38,13 @@ final class ResultImpl implements AllBeanCombiner.Result {
     return _staticRoot.getInstanceInjectRoot();
   }
 
-  StaticBeanCollector.Result _staticRoot;
+  @Override
+  public BeanContext lujbean() {
+    return _lujbean;
+  }
 
+  StaticBeanCollector.Result _staticRoot;
   DynamicInitInvoker.Result _dynamicRoot;
+
+  BeanContext _lujbean;
 }

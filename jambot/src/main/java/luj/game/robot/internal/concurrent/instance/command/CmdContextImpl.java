@@ -1,52 +1,34 @@
 package luj.game.robot.internal.concurrent.instance.command;
 
-import luj.cluster.api.actor.ActorMessageHandler;
-import luj.game.robot.api.action.RobotCommand;
-import luj.game.robot.internal.start.botinstance.RobotState;
+import luj.game.robot.api.action.RobotDataCommand;
 import org.slf4j.Logger;
 
-final class CmdContextImpl implements RobotCommand.Context {
+final class CmdContextImpl implements RobotDataCommand.Context {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getParam(RobotCommand<T> command) {
+  public <T> T param(RobotDataCommand<T> command) {
     return (T) _param;
   }
 
   @Override
-  public int getRobotIndex() {
-    return _botIndex;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <D> D getData(Class<D> dataType) {
-    return (D) _botState.getDataMap().get(dataType);
+  public RobotDataCommand.Robot robot() {
+    return _robot;
   }
 
   @Override
-  public Logger getLogger() {
+  public Logger logger() {
     return _logger;
   }
 
   @Override
-  public void executeCommand(Class<? extends RobotCommand<?>> cmdType) {
-    new CommandExecuteStarterV2(_instanceRef, cmdType, _cmdType, _param).start();
-  }
-
-  @Override
-  public RobotCommand.Service service() {
+  public RobotDataCommand.Service service() {
     return _service;
   }
 
-  RobotState _botState;
-  int _botIndex;
-
-  ActorMessageHandler.Ref _instanceRef;
-  RobotCommand.Service _service;
-
-  String _cmdType;
   Object _param;
+  CmdRobotImpl _robot;
 
   Logger _logger;
+  RobotDataCommand.Service _service;
 }

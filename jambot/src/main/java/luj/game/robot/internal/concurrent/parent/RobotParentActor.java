@@ -20,14 +20,6 @@ public class RobotParentActor {
     _robotList = robotList;
   }
 
-  public int getNextIndex() {
-    return _nextIndex;
-  }
-
-  public void setNextIndex(int nextIndex) {
-    _nextIndex = nextIndex;
-  }
-
   public Tellable getAdminRef() {
     return _adminRef;
   }
@@ -45,7 +37,6 @@ public class RobotParentActor {
   }
 
   private List<ActorRef> _robotList;
-  private int _nextIndex;
 
   private Tellable _adminRef;
   private RobotInstanceDependency _instanceDependency;

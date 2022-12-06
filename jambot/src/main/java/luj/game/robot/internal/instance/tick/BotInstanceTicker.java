@@ -2,8 +2,10 @@ package luj.game.robot.internal.instance.tick;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.Tellable;
@@ -18,7 +20,7 @@ import luj.game.robot.internal.instance.action.step.steps.StepCommand;
 import luj.game.robot.internal.instance.config.StatusConf;
 import luj.game.robot.internal.instance.tick.step.NextStepGetter;
 import luj.game.robot.internal.instance.tick.step.NextStepGetterFactory;
-import luj.game.robot.internal.instance.tick.step.param.StepParamResolver;
+import luj.game.robot.internal.instance.tick.step.param.StepParamResolverV2;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;
 import luj.game.robot.internal.instance.tick.wait.WaitingProtoChecker;
 import luj.game.robot.internal.start.botinstance.BotCurrentStep;
@@ -108,8 +110,9 @@ public class BotInstanceTicker {
     Class<?> paramType = cmd.getParamType();
     BeanContext lujbean = _instanceDep.getLujbean();
 
-    Object param = (paramType == Void.class) ? null :
-        new StepParamResolver(step.param(), actionParam, paramType, lujbean).resolve();
+    Map<String, Object> param = (paramType == Void.class) ? ImmutableMap.of() :
+        new StepParamResolverV2(step.paramV2(), paramType, lujbean).resolve();
+//        new StepParamResolver(step.param(), actionParam, paramType, lujbean).resolve();
 
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));
   }

@@ -27,13 +27,18 @@ public class RobotSessionStarterV2 {
     DynamicInitInvoker.Result dynamicRoot = new DynamicInitInvoker(
         staticRoot.getDynamicInitPlugin(), bootCfg.startParam()).invoke();
 
-    AllBeanCombiner.Result allRoot = new AllBeanCombiner(staticRoot, dynamicRoot).combine();
+    BeanContext lujbean = LujBean.start();
+    AllBeanCombiner.Result allRoot = new AllBeanCombiner(
+        staticRoot, dynamicRoot, lujbean).combine();
+
     if (allRoot.startListener().isEmpty()) {
       LOG.warn("没有启动逻辑，机器人结束：{}", RobotStartListener.class.getName());
       return;
     }
 
-    try (AnnotationConfigApplicationContext internalCtx = new AnnotationConfigApplicationContext()) {
+    try (var internalCtx = new AnnotationConfigApplicationContext()) {
+      internalCtx.registerBean(BeanContext.class, () -> lujbean);
+
       internalCtx.register(InjectConf.class);
       internalCtx.refresh();
 
@@ -45,8 +50,7 @@ public class RobotSessionStarterV2 {
    * @see luj.game.robot.internal.start.OnLujclusterStart
    */
   private void startLujcluster(ApplicationContext botCtx, AllBeanCombiner.Result injectRoot) {
-    BeanContext lujbean = LujBean.start();
-    var botbean = new BotbeanInLujcluster(injectRoot, lujbean);
+    var botbean = new BotbeanInLujcluster(injectRoot, injectRoot.lujbean());
 
 //    List<String> seeds = ImmutableList.of(_host + ":" + _port);
     LujCluster.start(botCtx).startNode(c -> c

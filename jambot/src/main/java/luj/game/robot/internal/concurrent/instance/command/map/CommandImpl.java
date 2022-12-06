@@ -1,12 +1,12 @@
 package luj.game.robot.internal.concurrent.instance.command.map;
 
-import luj.game.robot.api.action.RobotCommand;
+import luj.game.robot.api.action.RobotDataCommand;
 import org.slf4j.Logger;
 
 final class CommandImpl implements CommandMap.Command {
 
   @Override
-  public RobotCommand<?> getInstance() {
+  public RobotDataCommand<?> getInstance() {
     return _command;
   }
 
@@ -29,7 +29,7 @@ final class CommandImpl implements CommandMap.Command {
     return _commandType.getName();
   }
 
-  RobotCommand<?> _command;
+  RobotDataCommand<?> _command;
 
   Class<?> _commandType;
   Class<?> _paramType;

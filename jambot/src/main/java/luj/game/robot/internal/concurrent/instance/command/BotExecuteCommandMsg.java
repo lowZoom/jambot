@@ -1,7 +1,9 @@
 package luj.game.robot.internal.concurrent.instance.command;
 
+import java.util.Map;
+
 public record BotExecuteCommandMsg(
     String commandType,
-    Object param) {
+    Map<String, Object> param) {
   // NOOP
 }

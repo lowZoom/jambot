@@ -8,7 +8,7 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-public interface RobotCommand<P> {
+public interface RobotDataCommand<P> {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -19,17 +19,22 @@ public interface RobotCommand<P> {
 
   interface Context {
 
-    <T> T getParam(RobotCommand<T> command);
+    <T> T param(RobotDataCommand<T> command);
 
-    int getRobotIndex();
+    Robot robot();
+
+    Logger logger();
+
+    Service service();
+  }
+
+  interface Robot {
+
+    void putData(Object data);
 
     <D> D getData(Class<D> dataType);
 
-    Logger getLogger();
-
-    void executeCommand(Class<? extends RobotCommand<?>> cmdType);
-
-    Service service();
+    <P> CommandService<P> command(Class<? extends RobotDataCommand<P>> cmdType);
   }
 
   interface Service {

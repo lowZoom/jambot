@@ -2,8 +2,7 @@ package luj.game.robot.internal.net.receive;
 
 import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.ActorMessageHandler;
-import luj.game.robot.api.action.RobotCommand;
-import luj.game.robot.api.proto.RobotProtoEncoder;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.CommandExecuteStarter;
 import luj.game.robot.internal.instance.status.ChangeStatusRequestor;
@@ -39,14 +38,12 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
-  public void executeCommand(Class<? extends RobotCommand> cmdType) {
+  public void executeCommand(Class<? extends RobotDataCommand<?>> cmdType) {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
 
   Object _proto;
   RobotState _robotState;
-
-  RobotProtoEncoder _protoEncoder;
 
   ActorMessageHandler.Ref _instanceRef;
   BeanContext _lujbean;

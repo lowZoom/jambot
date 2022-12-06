@@ -23,5 +23,5 @@ final class AdminOverviewHandler implements BotAdminActor.Handler<AdminOverviewR
   }
 
   @Autowired
-  private BeanContext _lujbean;
+  BeanContext _lujbean;
 }

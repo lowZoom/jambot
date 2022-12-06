@@ -1,7 +1,7 @@
 package luj.game.robot.internal.dynamic.init;
 
 import java.util.List;
-import luj.game.robot.api.action.RobotCommand;
+import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 
 final class ResultImpl implements DynamicInitInvoker.Result {
@@ -12,11 +12,11 @@ final class ResultImpl implements DynamicInitInvoker.Result {
   }
 
   @Override
-  public List<RobotCommand<?>> commandList() {
+  public List<RobotDataCommand<?>> commandList() {
     return _command;
   }
 
   List<RobotStartListener> _start;
 
-  List<RobotCommand<?>> _command;
+  List<RobotDataCommand<?>> _command;
 }

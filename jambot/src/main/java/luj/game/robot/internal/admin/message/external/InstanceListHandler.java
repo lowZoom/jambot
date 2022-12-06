@@ -33,7 +33,7 @@ final class InstanceListHandler implements BotAdminActor.Handler<InstanceListReq
         .set(b::index, info.getIndex())
         .set(b::connected, info.isConnected())
         .set(b::status, info.getStatus())
-    ).getInstance();
+    ).getValueInstance();
   }
 
   @Autowired

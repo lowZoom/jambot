@@ -1,8 +1,8 @@
 package luj.game.robot.internal.admin.message.internal.instance;
 
-import luj.ava.spring.Internal;
 import luj.game.robot.internal.admin.actor.AdminBotInfo;
 import luj.game.robot.internal.admin.actor.BotAdminActor;
+import luj.spring.anno.Internal;
 
 @Internal
 final class UpdateInstanceHandler implements BotAdminActor.Handler<UpdateInstanceMsg> {

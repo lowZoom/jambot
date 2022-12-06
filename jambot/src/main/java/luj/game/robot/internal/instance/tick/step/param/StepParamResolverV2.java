@@ -2,7 +2,6 @@ package luj.game.robot.internal.instance.tick.step.param;
 
 import java.util.Map;
 import luj.bean.api.BeanContext;
-import luj.bean.api.bean.ImmutableBean;
 
 public class StepParamResolverV2 {
 
@@ -12,11 +11,11 @@ public class StepParamResolverV2 {
     _lujbean = lujbean;
   }
 
-  public Object resolve() {
+  public Map<String, Object> resolve() {
     Map<String, Object> valueMap = _stepRaw;// _stepRaw.resolveWith(_actionParam).entrySet()
 
-    ImmutableBean<?> bean = _lujbean.createImmutable(_paramType, valueMap);
-    return bean.getValueInstance();
+//    ImmutableBean<?> bean = _lujbean.createImmutable(_paramType, valueMap);
+    return valueMap;// bean.getValueInstance();
   }
 
   private final Map<String, Object> _stepRaw;
