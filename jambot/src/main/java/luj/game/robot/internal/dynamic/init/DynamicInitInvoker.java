@@ -5,6 +5,7 @@ import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.plugin.JambotDynamicInit;
+import luj.game.robot.api.proto.RobotProtoHandler;
 
 public class DynamicInitInvoker {
 
@@ -15,6 +16,8 @@ public class DynamicInitInvoker {
     List<RobotCreateListener> createListener();
 
     List<RobotDataCommand<?>> dataCommand();
+
+    List<RobotProtoHandler<?>> protoHandler();
   }
 
   public DynamicInitInvoker(JambotDynamicInit initPlugin, Object startParam) {
@@ -37,7 +40,8 @@ public class DynamicInitInvoker {
     result._start = ctx.findBeans(RobotStartListener.class);
 
     result._create = ctx.findBeans(RobotCreateListener.class);
-    result._command = ctx.findBeans(RobotDataCommand.class);
+    result._dataCommand = ctx.findBeans(RobotDataCommand.class);
+    result._protoHandler = ctx.findBeans(RobotProtoHandler.class);
 
     return result;
   }

@@ -39,17 +39,18 @@ final class OnLujclusterStart implements NodeStartListener {
     AllBeanCombiner.Result rootBean = botbean.getInjectRoot();
     CommandMap cmdMap = new CommandMapFactory(rootBean).create();
 
-    Map<Class<?>, RobotProtoHandler<?>> handleMap = rootBean.protoHandler().stream()
+    Map<String, RobotProtoHandler<?>> handleMap = rootBean.protoHandler().stream()
         .collect(toMap(this::getProtoType, Function.identity()));
 
     return new RobotInstanceDependency(rootBean.instanceRoot(),
         botbean.getLujbean(), rootBean.createListener(), cmdMap, handleMap);
   }
 
-  private Class<?> getProtoType(RobotProtoHandler<?> handler) {
+  private String getProtoType(RobotProtoHandler<?> handler) {
     return TypeX.ofInstance(handler)
         .getSupertype(RobotProtoHandler.class)
         .getTypeParam(0)
-        .asClass();
+        .asClass()
+        .getName();
   }
 }

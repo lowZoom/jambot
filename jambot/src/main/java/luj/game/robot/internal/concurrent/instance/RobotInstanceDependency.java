@@ -12,7 +12,7 @@ public class RobotInstanceDependency {
 
   public RobotInstanceDependency(RobotInstanceInjectRoot injectRoot, BeanContext lujbean,
       List<RobotCreateListener> createList, CommandMap commandMap,
-      Map<Class<?>, RobotProtoHandler<?>> protoHandleMap) {
+      Map<String, RobotProtoHandler<?>> protoHandleMap) {
     _injectRoot = injectRoot;
     _lujbean = lujbean;
     _createList = createList;
@@ -36,7 +36,7 @@ public class RobotInstanceDependency {
     return _commandMap;
   }
 
-  public Map<Class<?>, RobotProtoHandler<?>> getProtoHandleMap() {
+  public Map<String, RobotProtoHandler<?>> getProtoHandleMap() {
     return _protoHandleMap;
   }
 
@@ -46,5 +46,5 @@ public class RobotInstanceDependency {
   private final List<RobotCreateListener> _createList;
   private final CommandMap _commandMap;
 
-  private final Map<Class<?>, RobotProtoHandler<?>> _protoHandleMap;
+  private final Map<String, RobotProtoHandler<?>> _protoHandleMap;
 }

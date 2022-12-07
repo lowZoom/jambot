@@ -39,7 +39,10 @@ final class ResultImpl implements AllBeanCombiner.Result {
 
   @Override
   public List<RobotProtoHandler<?>> protoHandler() {
-    return ImmutableList.of();
+    return ImmutableList.<RobotProtoHandler<?>>builder()
+        .addAll(_staticRoot.protoHandler())
+        .addAll(_dynamicRoot.protoHandler())
+        .build();
   }
 
   @Override

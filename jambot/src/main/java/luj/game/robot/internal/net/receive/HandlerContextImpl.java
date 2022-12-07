@@ -38,7 +38,7 @@ final class HandlerContextImpl implements RobotProtoHandler.Context {
   }
 
   @Override
-  public void executeCommand(Class<? extends RobotDataCommand<?>> cmdType) {
+  public void executeCommand(Class<? extends RobotDataCommand> cmdType) {
     new CommandExecuteStarter(_instanceRef, cmdType).start();
   }
 

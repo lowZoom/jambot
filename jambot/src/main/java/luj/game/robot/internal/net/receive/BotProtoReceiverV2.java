@@ -26,18 +26,18 @@ public class BotProtoReceiverV2 {
     Queue<Class<?>> history = botState.getReceiveHistory();
     history.offer(protoType);
 
-    handleProto(_proto, protoType);
+    handleProto(_proto, protoType.getName());
 
     if (new WaitingProtoChecker(botState).isWaiting()) {
       new WaitStepFinishTrier(botState, _instanceRef).tryFinish();
     }
   }
 
-  private void handleProto(Object proto, Class<?> protoType) {
+  private void handleProto(Object proto, String protoKey) {
     RobotInstanceDependency dep = _instanceState.getDependency();
-    Map<Class<?>, RobotProtoHandler<?>> handlerMap = dep.getProtoHandleMap();
-    RobotProtoHandler<?> handler = handlerMap.get(protoType);
+    Map<String, RobotProtoHandler<?>> handlerMap = dep.getProtoHandleMap();
 
+    RobotProtoHandler<?> handler = handlerMap.get(protoKey);
     if (handler == null) {
 //      LOG.debug("未处理的协议包：{}，{}", proto.getClass().getName(), proto);
       return;
@@ -46,12 +46,13 @@ public class BotProtoReceiverV2 {
     var handleCtx = new HandlerContextImpl();
     handleCtx._proto = proto;
     handleCtx._robotState = _instanceState.getRobotState();
-
     handleCtx._instanceRef = _instanceRef;
     handleCtx._lujbean = dep.getLujbean();
 
     handler.onHandle(handleCtx);
   }
+
+//  private static final Logger LOG = LoggerFactory.getLogger(BotProtoReceiverV2.class);
 
   private final Object _proto;
 

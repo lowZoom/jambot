@@ -20,7 +20,8 @@ public interface RobotProtoHandler<P> {
 
     void finishWait(Class<?> protoType);
 
-    void executeCommand(Class<? extends RobotDataCommand<?>> cmdType);
+    @Deprecated
+    void executeCommand(Class<? extends RobotDataCommand> cmdType);
   }
 
   void onHandle(Context ctx);
