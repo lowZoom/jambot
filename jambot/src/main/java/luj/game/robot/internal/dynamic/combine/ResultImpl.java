@@ -3,6 +3,7 @@ package luj.game.robot.internal.dynamic.combine;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import luj.bean.api.BeanContext;
+import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoHandler;
@@ -15,16 +16,24 @@ final class ResultImpl implements AllBeanCombiner.Result {
   @Override
   public List<RobotStartListener> startListener() {
     return ImmutableList.<RobotStartListener>builder()
-        .addAll(_staticRoot.getStartListeners())
-        .addAll(_dynamicRoot.startListeners())
+        .addAll(_staticRoot.startListener())
+        .addAll(_dynamicRoot.startListener())
         .build();
   }
 
   @Override
-  public List<RobotDataCommand<?>> command() {
+  public List<RobotCreateListener> createListener() {
+    return ImmutableList.<RobotCreateListener>builder()
+        .addAll(_staticRoot.instanceRoot().getCreateListener())
+        .addAll(_dynamicRoot.createListener())
+        .build();
+  }
+
+  @Override
+  public List<RobotDataCommand<?>> dataCommand() {
     return ImmutableList.<RobotDataCommand<?>>builder()
-        .addAll(_staticRoot.getCommandList())
-        .addAll(_dynamicRoot.commandList())
+        .addAll(_staticRoot.dataCommand())
+        .addAll(_dynamicRoot.dataCommand())
         .build();
   }
 
@@ -35,7 +44,7 @@ final class ResultImpl implements AllBeanCombiner.Result {
 
   @Override
   public RobotInstanceInjectRoot instanceRoot() {
-    return _staticRoot.getInstanceInjectRoot();
+    return _staticRoot.instanceRoot();
   }
 
   @Override

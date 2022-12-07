@@ -111,7 +111,7 @@ public class BotInstanceTicker {
     BeanContext lujbean = _instanceDep.getLujbean();
 
     Map<String, Object> param = (paramType == Void.class) ? ImmutableMap.of() :
-        new StepParamResolverV2(step.paramV2(), paramType, lujbean).resolve();
+        new StepParamResolverV2(step.param(), paramType, lujbean).resolve();
 //        new StepParamResolver(step.param(), actionParam, paramType, lujbean).resolve();
 
     _instanceRef.tell(new BotExecuteCommandMsg(cmdType, param));

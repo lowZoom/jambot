@@ -2,6 +2,7 @@ package luj.game.robot.internal.dynamic.combine;
 
 import java.util.List;
 import luj.bean.api.BeanContext;
+import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.proto.RobotProtoHandler;
@@ -15,7 +16,9 @@ public class AllBeanCombiner {
 
     List<RobotStartListener> startListener();
 
-    List<RobotDataCommand<?>> command();
+    List<RobotCreateListener> createListener();
+
+    List<RobotDataCommand<?>> dataCommand();
 
     List<RobotProtoHandler<?>> protoHandler();
 
@@ -31,7 +34,7 @@ public class AllBeanCombiner {
     _lujbean = lujbean;
   }
 
-  // 如果有要做热更，要考虑泄露问题
+  // 如果有要做热更，需要考虑泄露问题
   public Result combine() {
     var result = new ResultImpl();
     result._staticRoot = _staticRoot;

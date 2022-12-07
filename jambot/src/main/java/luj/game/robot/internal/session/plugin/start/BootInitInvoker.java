@@ -1,4 +1,4 @@
-package luj.game.robot.internal.sessionv2.plugin.start;
+package luj.game.robot.internal.session.plugin.start;
 
 import luj.game.robot.api.plugin.JambotBootInit;
 
@@ -14,10 +14,11 @@ public class BootInitInvoker {
   }
 
   public Result invoke() {
-    ContextImpl ctx = new ContextImpl();
+    var ctx = new BootContextImpl();
     ctx._config = new ConfigImpl();
 
-    ConfigImpl config = (ConfigImpl) _initPlugin.onInit(ctx);
+    // 调用外部逻辑
+    var config = (ConfigImpl) _initPlugin.onInit(ctx);
 
     return new Result() {
       @Override

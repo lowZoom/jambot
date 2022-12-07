@@ -14,15 +14,15 @@ public class StaticBeanCollector {
 
   public interface Result {
 
-    List<RobotStartListener> getStartListeners();
+    List<RobotStartListener> startListener();
 
-    List<RobotProtoHandler<?>> getProtoHandlerList();
+    List<RobotDataCommand<?>> dataCommand();
+
+    List<RobotProtoHandler<?>> protoHandler();
+
+    RobotInstanceInjectRoot instanceRoot();
 
     ///////////////
-
-    RobotInstanceInjectRoot getInstanceInjectRoot();
-
-    List<RobotDataCommand<?>> getCommandList();
 
     JambotBootInit getBootInitPlugin();
 

@@ -38,6 +38,7 @@ final class OnExecuteCommand implements RobotInstanceActor.Handler<BotExecuteCom
     robot._instanceRef = selfRef;
     robot._dependency = dep;
     robot._cmdType = cmdType;
+    robot._param = msg.param();
 
     var execCtx = new CmdContextImpl();
     execCtx._param = makeParamObj(ctx, cmd);

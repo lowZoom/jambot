@@ -1,11 +1,14 @@
 package luj.game.robot.internal.session.inject.botinstance;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.network.RobotDisconnectListener;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RobotInstanceInjectRoot {
 
-  public RobotCreateListener getCreateListener() {
+  public List<RobotCreateListener> getCreateListener() {
     return _createListener;
   }
 
@@ -13,9 +16,9 @@ public class RobotInstanceInjectRoot {
     return _disconnectListener;
   }
 
-//  @Autowired
-  private RobotCreateListener _createListener;
+  @Autowired(required = false)
+  List<RobotCreateListener> _createListener = ImmutableList.of();
 
 //  @Autowired
-  private RobotDisconnectListener _disconnectListener;
+  RobotDisconnectListener _disconnectListener;
 }

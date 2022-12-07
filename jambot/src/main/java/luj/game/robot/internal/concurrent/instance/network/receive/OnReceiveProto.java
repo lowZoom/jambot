@@ -12,7 +12,7 @@ final class OnReceiveProto implements RobotInstanceActor.Handler<BotReceiveProto
     RobotInstanceActor self = ctx.getActorState(this);
     BotReceiveProtoMsg msg = ctx.getMessage(this);
 
-    new BotProtoReceiverV2(msg.protoData(), self, ctx.getActorRef()).receive();
+    new BotProtoReceiverV2(msg.proto(), self, ctx.getActorRef()).receive();
   }
 
 //  private static final Logger LOG = LoggerFactory.getLogger(OnReceiveProto.class);

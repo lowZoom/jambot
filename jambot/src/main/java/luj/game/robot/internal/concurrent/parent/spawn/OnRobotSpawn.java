@@ -12,7 +12,7 @@ import luj.spring.anno.Internal;
 final class OnRobotSpawn implements RobotParentActor.Handler<RobotSpawnMsg> {
 
   /**
-   * @see luj.game.robot.internal.concurrent.instance.start.OnInstancePrestart#onHandle
+   * @see luj.game.robot.internal.concurrent.instance.prestart.OnInstancePrestart#onHandle
    */
   @Override
   public void onHandle(Context ctx) {

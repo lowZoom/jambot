@@ -1,4 +1,4 @@
-package luj.game.robot.internal.sessionv2.plugin.start;
+package luj.game.robot.internal.session.plugin.start;
 
 import luj.game.robot.api.plugin.JambotBootInit;
 

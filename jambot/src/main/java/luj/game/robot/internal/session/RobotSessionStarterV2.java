@@ -7,7 +7,7 @@ import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
 import luj.game.robot.internal.session.inject.StaticBeanCollector;
-import luj.game.robot.internal.sessionv2.plugin.start.BootInitInvoker;
+import luj.game.robot.internal.session.plugin.start.BootInitInvoker;
 import luj.game.robot.internal.start.BotbeanInLujcluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package luj.game.robot.internal.concurrent.instance.start;
+package luj.game.robot.internal.concurrent.instance.prestart;
 
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.internal.start.botinstance.RobotState;
@@ -10,5 +10,12 @@ final class CreateContextImpl implements RobotCreateListener.Context {
     _robotState.getDataMap().put(data.getClass(), data);
   }
 
+  @Override
+  public RobotCreateListener.Internal getInternal() {
+    return _internal;
+  }
+
   RobotState _robotState;
+
+  RobotCreateListener.Internal _internal;
 }

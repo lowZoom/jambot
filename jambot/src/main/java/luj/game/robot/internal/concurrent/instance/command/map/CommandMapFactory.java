@@ -16,7 +16,7 @@ public class CommandMapFactory {
   }
 
   public CommandMap create() {
-    Map<String, CommandMap.Command> cmdMap = _rootBean.command().stream()
+    Map<String, CommandMap.Command> cmdMap = _rootBean.dataCommand().stream()
         .map(this::createCommand)
         .collect(toMap(CommandImpl::getCommandName, Function.identity()));
 
@@ -27,7 +27,7 @@ public class CommandMapFactory {
   }
 
   private CommandImpl createCommand(RobotDataCommand<?> cmdInstance) {
-    CommandImpl cmd = new CommandImpl();
+    var cmd = new CommandImpl();
     cmd._command = cmdInstance;
 
     Class<?> cmdType = cmdInstance.getClass();

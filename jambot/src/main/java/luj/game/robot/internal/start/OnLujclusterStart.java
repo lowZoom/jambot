@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
-import luj.ava.spring.Internal;
 import luj.cluster.api.node.NodeStartListener;
 import luj.game.robot.api.proto.RobotProtoHandler;
 import luj.game.robot.internal.admin.actor.BotAdminActor;
@@ -16,6 +15,7 @@ import luj.game.robot.internal.concurrent.instance.command.map.CommandMapFactory
 import luj.game.robot.internal.concurrent.parent.RobotParentActor;
 import luj.game.robot.internal.dynamic.combine.AllBeanCombiner;
 import luj.game.robot.internal.start.listener.BotStartListenTrigger;
+import luj.spring.anno.Internal;
 
 @Internal
 final class OnLujclusterStart implements NodeStartListener {
@@ -23,10 +23,10 @@ final class OnLujclusterStart implements NodeStartListener {
   @Override
   public void onStart(Context ctx) {
     BotbeanInLujcluster botbean = ctx.getStartParam();
-    BotAdminActor adminActor = new BotAdminActor();
+    var adminActor = new BotAdminActor();
     Actor adminRef = ctx.createApplicationActor(adminActor);
 
-    RobotParentActor parentActor = new RobotParentActor();
+    var parentActor = new RobotParentActor();
     parentActor.setRobotList(new ArrayList<>());
     parentActor.setAdminRef(adminRef);
     parentActor.setInstanceDependency(collectInstanceDependency(botbean));
@@ -43,7 +43,7 @@ final class OnLujclusterStart implements NodeStartListener {
         .collect(toMap(this::getProtoType, Function.identity()));
 
     return new RobotInstanceDependency(rootBean.instanceRoot(),
-        botbean.getLujbean(), handleMap, cmdMap);
+        botbean.getLujbean(), rootBean.createListener(), cmdMap, handleMap);
   }
 
   private Class<?> getProtoType(RobotProtoHandler<?> handler) {

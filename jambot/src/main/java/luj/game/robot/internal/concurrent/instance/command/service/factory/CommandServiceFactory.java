@@ -2,6 +2,8 @@ package luj.game.robot.internal.concurrent.instance.command.service.factory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.ActorMessageHandler;
@@ -27,6 +29,7 @@ public class CommandServiceFactory {
 
     var service = new ServiceImpl<P>();
     service._cmd = cmd;
+    service._fromParam = MoreObjects.firstNonNull(_fromParam, ImmutableMap.of());
     service._factory = this;
 
     return service;
@@ -34,10 +37,11 @@ public class CommandServiceFactory {
 
   final ActorMessageHandler.Ref _instanceRef;
 
-  final Map<String, Object> _fromParam;
   final String _fromCmd;
   final BeanContext _lujbean;
 
   private final CommandMap _commandMap;
   private final Class<?> _cmdType;
+
+  private final Map<String, Object> _fromParam;
 }

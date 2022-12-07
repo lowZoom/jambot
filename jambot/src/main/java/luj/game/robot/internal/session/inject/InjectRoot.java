@@ -14,23 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 final class InjectRoot implements StaticBeanCollector.Result {
 
   @Override
-  public List<RobotStartListener> getStartListeners() {
+  public List<RobotStartListener> startListener() {
     return _startListeners;
   }
 
   @Override
-  public List<RobotProtoHandler<?>> getProtoHandlerList() {
+  public List<RobotDataCommand<?>> dataCommand() {
+    return _commandList;
+  }
+
+  @Override
+  public List<RobotProtoHandler<?>> protoHandler() {
     return _protoHandlerList;
   }
 
   @Override
-  public RobotInstanceInjectRoot getInstanceInjectRoot() {
+  public RobotInstanceInjectRoot instanceRoot() {
     return _instanceInjectRoot;
-  }
-
-  @Override
-  public List<RobotDataCommand<?>> getCommandList() {
-    return _commandList;
   }
 
   @Override
