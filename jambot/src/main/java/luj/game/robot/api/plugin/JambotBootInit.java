@@ -6,6 +6,8 @@ public interface JambotBootInit {
 
   interface Context {
 
+    //TODO: 管理节点的引用
+
     Config configure(Function<Config, Config> c);
   }
 

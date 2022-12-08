@@ -16,7 +16,7 @@ public interface RobotCreateListener {
 
   interface Network {
 
-    void receiveProto(Object proto, Object param);
+    void receiveProto(String protoKey, Object protoObj, Object param);
   }
 
   void onCreate(Context ctx);

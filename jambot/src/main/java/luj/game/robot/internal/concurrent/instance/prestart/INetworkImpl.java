@@ -7,8 +7,8 @@ import luj.game.robot.internal.concurrent.instance.network.receive.BotReceivePro
 final class INetworkImpl implements RobotCreateListener.Network {
 
   @Override
-  public void receiveProto(Object proto, Object param) {
-    _instanceRef.tell(new BotReceiveProtoMsg(proto, param));
+  public void receiveProto(String protoKey, Object protoObj, Object param) {
+    _instanceRef.tell(new BotReceiveProtoMsg(protoKey, protoObj, param));
   }
 
   Tellable _instanceRef;

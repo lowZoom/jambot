@@ -12,21 +12,22 @@ import luj.game.robot.internal.start.botinstance.RobotState;
 
 public class BotProtoReceiverV2 {
 
-  public BotProtoReceiverV2(Object proto, RobotInstanceActor instanceState,
+  public BotProtoReceiverV2(String protoKey, Object protoObj, RobotInstanceActor instanceState,
       ActorMessageHandler.Ref instanceRef) {
-    _proto = proto;
+    _protoKey = protoKey;
+    _protoObj = protoObj;
     _instanceState = instanceState;
     _instanceRef = instanceRef;
   }
 
   public void receive() {
-    Class<?> protoType = _proto.getClass();
+    Class<?> protoType = _protoObj.getClass();
 
     RobotState botState = _instanceState.getRobotState();
     Queue<Class<?>> history = botState.getReceiveHistory();
     history.offer(protoType);
 
-    handleProto(_proto, protoType.getName());
+    handleProto(_protoObj, _protoKey);
 
     if (new WaitingProtoChecker(botState).isWaiting()) {
       new WaitStepFinishTrier(botState, _instanceRef).tryFinish();
@@ -54,7 +55,8 @@ public class BotProtoReceiverV2 {
 
 //  private static final Logger LOG = LoggerFactory.getLogger(BotProtoReceiverV2.class);
 
-  private final Object _proto;
+  private final String _protoKey;
+  private final Object _protoObj;
 
   private final RobotInstanceActor _instanceState;
   private final ActorMessageHandler.Ref _instanceRef;

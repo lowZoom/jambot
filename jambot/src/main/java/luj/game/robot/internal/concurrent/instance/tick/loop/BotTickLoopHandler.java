@@ -17,7 +17,7 @@ final class BotTickLoopHandler implements RobotInstanceActor.Handler<BotTickLoop
     selfRef.tell(BotTickMsg.INSTANCE);
 
     Duration nextTick = getNextTickTime(self);
-    selfRef.tell(BotTickLoopMsg.INSTANCE, nextTick);
+//    selfRef.tell(BotTickLoopMsg.INSTANCE, nextTick);
   }
 
   private Duration getNextTickTime(RobotInstanceActor self) {
