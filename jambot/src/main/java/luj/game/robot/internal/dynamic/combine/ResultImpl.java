@@ -6,7 +6,7 @@ import luj.bean.api.BeanContext;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.dynamic.init.DynamicInitInvoker;
 import luj.game.robot.internal.session.inject.StaticBeanCollector;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;

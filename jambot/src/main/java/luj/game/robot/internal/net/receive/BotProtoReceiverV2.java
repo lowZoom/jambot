@@ -3,7 +3,7 @@ package luj.game.robot.internal.net.receive;
 import java.util.Map;
 import java.util.Queue;
 import luj.cluster.api.actor.ActorMessageHandler;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.instance.tick.wait.WaitStepFinishTrier;

@@ -4,7 +4,7 @@ import java.util.List;
 import luj.game.robot.api.action.RobotCreateListener;
 import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 
 final class ResultImpl implements DynamicInitInvoker.Result {
 

@@ -3,7 +3,7 @@ package luj.game.robot.internal.net.receive;
 import luj.bean.api.BeanContext;
 import luj.cluster.api.actor.ActorMessageHandler;
 import luj.game.robot.api.action.RobotDataCommand;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.CommandExecuteStarter;
 import luj.game.robot.internal.instance.status.ChangeStatusRequestor;
 import luj.game.robot.internal.start.botinstance.RobotState;

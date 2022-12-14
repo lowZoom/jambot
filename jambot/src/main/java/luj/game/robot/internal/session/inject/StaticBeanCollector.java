@@ -5,7 +5,7 @@ import luj.game.robot.api.action.RobotDataCommand;
 import luj.game.robot.api.boot.RobotStartListener;
 import luj.game.robot.api.plugin.JambotBootInit;
 import luj.game.robot.api.plugin.JambotDynamicInit;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

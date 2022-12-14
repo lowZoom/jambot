@@ -1,4 +1,4 @@
-package luj.game.robot.api.proto;
+package luj.game.robot.api.network;
 
 import luj.game.robot.api.action.RobotDataCommand;
 

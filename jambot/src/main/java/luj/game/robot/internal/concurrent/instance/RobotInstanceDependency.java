@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import luj.bean.api.BeanContext;
 import luj.game.robot.api.action.RobotCreateListener;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
 import luj.game.robot.internal.session.inject.botinstance.RobotInstanceInjectRoot;
 

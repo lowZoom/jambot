@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import luj.ava.reflect.type.TypeX;
 import luj.cluster.api.node.NodeStartListener;
-import luj.game.robot.api.proto.RobotProtoHandler;
+import luj.game.robot.api.network.RobotProtoHandler;
 import luj.game.robot.internal.admin.actor.BotAdminActor;
 import luj.game.robot.internal.concurrent.instance.RobotInstanceDependency;
 import luj.game.robot.internal.concurrent.instance.command.map.CommandMap;
